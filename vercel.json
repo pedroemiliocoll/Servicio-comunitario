@@ -15,6 +15,9 @@
   ],
   "routes": [
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "server/index.js"
     },
@@ -24,8 +27,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html",
-      "check": true
+      "dest": "/index.html"
     }
   ],
   "crons": [
