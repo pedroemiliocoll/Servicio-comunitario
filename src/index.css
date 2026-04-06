@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — Scholar Blue (Light) / Dark Scholar (Dark)
+   Source of truth: Stitch MCP design systems
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Raw palette (FIXED — used by always-dark sections: Hero, Footer, Stats, CTA, Banners) ── */
+  --blue-50: #f1f9fe;
+  --blue-100: #e1f2fd;
+  --blue-200: #bde6fa;
+  --blue-300: #82d2f7;
+  --blue-400: #40bbf0;
+  --blue-500: #17a4e0;
+  --blue-600: #0b92d5;
+  --blue-700: #09689b;
+  --blue-800: #0c5880;
+  --blue-900: #104a6a;
+  --blue-950: #0b2e46;
+  --gold: #D4A843;
+  --gold-light: #E8C97A;
+  --gold-dark: #B08A2E;
+
+  /* ── Material Design 3 Semantic Tokens — LIGHT (Scholar Blue) ── */
+  --md-surface: #f9f9ff;
+  --md-surface-dim: #d8d9e3;
+  --md-surface-bright: #f9f9ff;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #f2f3fd;
+  --md-surface-container: #ecedf7;
+  --md-surface-container-high: #e6e8f2;
+  --md-surface-container-highest: #e0e2ec;
+  --md-surface-variant: #e0e2ec;
+  --md-surface-tint: #005bc0;
+
+  --md-on-surface: #191c23;
+  --md-on-surface-variant: #414754;
+  --md-on-background: #191c23;
+  --md-background: #f9f9ff;
+
+  --md-primary: #005bbf;
+  --md-primary-container: #1a73e8;
+  --md-on-primary: #ffffff;
+  --md-on-primary-container: #ffffff;
+  --md-primary-fixed: #d8e2ff;
+  --md-primary-fixed-dim: #adc7ff;
+
+  --md-secondary: #4f5f7b;
+  --md-secondary-container: #cdddff;
+  --md-on-secondary: #ffffff;
+  --md-on-secondary-container: #51617e;
+  --md-secondary-fixed: #d6e3ff;
+  --md-secondary-fixed-dim: #b7c7e8;
+
+  --md-tertiary: #9e4300;
+  --md-tertiary-container: #c55500;
+  --md-on-tertiary: #ffffff;
+  --md-on-tertiary-container: #0e0200;
+  --md-tertiary-fixed: #ffdbcb;
+  --md-tertiary-fixed-dim: #ffb691;
+
+  --md-error: #ba1a1a;
+  --md-error-container: #ffdad6;
+  --md-on-error: #ffffff;
+  --md-on-error-container: #93000a;
+
+  --md-outline: #9ca3af;
+  --md-outline-variant: #e5e7eb;
+
+  --md-inverse-surface: #2d3038;
+  --md-inverse-on-surface: #eff0fa;
+  --md-inverse-primary: #adc7ff;
+
+  /* ── Legacy compatibility aliases ── */
+  --color-primary: var(--md-primary);
+  --color-primary-hover: #004493;
+  --color-primary-light: var(--md-primary-fixed);
+  --color-accent: var(--gold);
+  --color-bg: var(--md-surface);
+  --color-bg-alt: var(--md-surface-container-low);
+  --color-text: var(--md-on-surface);
+  --color-text-light: var(--md-on-surface-variant);
+  --color-text-inverse: var(--md-on-primary);
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: var(--md-error);
+
+  /* ── Typography ── */
+  --font-display: 'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ── Radii ── */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 20px rgba(0, 91, 191, 0.3);
+
+  /* ── Transitions ── */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* ── Z-indices ── */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-chatbot: 500;
+  --z-tooltip: 600;
+
+  --container-max: 1200px;
+
+  /* ── Admin-specific (Horizon-style) ── */
+  --admin-bg: #F4F7FE;
+  --admin-card: #ffffff;
+  --admin-text-primary: #2B3674;
+  --admin-text-secondary: #A3AED0;
+  --admin-text-muted: #707EAE;
+  --admin-sidebar-bg: linear-gradient(180deg, var(--blue-950), var(--blue-900));
+  --admin-topbar-bg: rgba(255, 255, 255, 0.7);
+  --admin-topbar-actions-bg: #ffffff;
+  --admin-search-bg: #F4F7FE;
+  --admin-input-text: #2B3674;
+  --admin-shadow-sm: 0px 18px 40px rgba(112, 144, 176, 0.12);
+  --admin-shadow-md: 0px 20px 40px rgba(112, 144, 176, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE — Dark Scholar palette from Stitch
+   ═══════════════════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+  --md-surface: #0b1326;
+  --md-surface-dim: #0b1326;
+  --md-surface-bright: #31394d;
+  --md-surface-container-lowest: #060e20;
+  --md-surface-container-low: #131b2e;
+  --md-surface-container: #171f33;
+  --md-surface-container-high: #222a3d;
+  --md-surface-container-highest: #2d3449;
+  --md-surface-variant: #2d3449;
+  --md-surface-tint: #adc6ff;
+
+  --md-on-surface: #dae2fd;
+  --md-on-surface-variant: #c2c6d6;
+  --md-on-background: #dae2fd;
+  --md-background: #0b1326;
+
+  --md-primary: #005bbf;
+  --md-primary-container: #004a9e;
+  --md-on-primary: #ffffff;
+  --md-on-primary-container: #ffffff;
+  --md-primary-fixed: #005bbf;
+  --md-primary-fixed-dim: #1a73e8;
+
+  --md-secondary: #4f5f7b;
+  --md-secondary-container: #3b485e;
+  --md-on-secondary: #ffffff;
+  --md-on-secondary-container: #ffffff;
+  --md-secondary-fixed: #4f5f7b;
+  --md-secondary-fixed-dim: #6b7a99;
+
+  --md-tertiary: #9e4300;
+  --md-tertiary-container: #7a3300;
+  --md-on-tertiary: #ffffff;
+  --md-on-tertiary-container: #ffffff;
+  --md-tertiary-fixed: #9e4300;
+  --md-tertiary-fixed-dim: #c55500;
+
+  --md-error: #ba1a1a;
+  --md-error-container: #93000a;
+  --md-on-error: #ffffff;
+  --md-on-error-container: #ffdad6;
+
+  --md-outline: #4f5f7b;
+  --md-outline-variant: #1a2235;
+
+  --md-inverse-surface: #dae2fd;
+  --md-inverse-on-surface: #283044;
+  --md-inverse-primary: #1a73e8;
+
+  /* ── Legacy compatibility (auto-switch) ── */
+  --color-primary-hover: #8db4f8;
+
+  /* ── Shadows (darker for dark mode) ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(173, 198, 255, 0.3);
+
+  /* ── Admin-specific (Dark) ── */
+  --admin-bg: #0b1437;
+  --admin-card: #111c44;
+  --admin-text-primary: #ffffff;
+  --admin-text-secondary: #A3AED0;
+  --admin-text-muted: #A3AED0;
+  --admin-topbar-bg: rgba(17, 28, 68, 0.7);
+  --admin-topbar-actions-bg: #0b1437;
+  --admin-search-bg: #111c44;
+  --admin-input-text: #ffffff;
+  --admin-shadow-sm: 0px 18px 40px rgba(0, 0, 0, 0.3);
+  --admin-shadow-md: 0px 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE RESETS & GLOBALS
+   ═══════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--md-on-surface);
+  background: var(--md-surface);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--md-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--md-on-surface);
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.5rem; }
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: var(--md-primary-fixed);
+  color: var(--md-on-surface);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--md-surface-container);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md-outline);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-outline-variant);
+}
+
+/* ═══ Theme Toggle Animation ═══ */
+.theme-toggle-icon {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+[data-theme="dark"] .theme-toggle-icon {
+  transform: rotate(360deg);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY IMPROVEMENTS
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Focus visible para navegación por teclado ── */
+*:focus-visible {
+  outline: 3px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Ocultar outline en mouse pero mantener para teclado */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── prefers-reduced-motion para usuarios sensibles ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}

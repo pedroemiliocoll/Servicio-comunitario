@@ -1,0 +1,233 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: var(--z-sticky);
+    transition: background-color 0.3s, box-shadow 0.3s, padding 0.3s;
+    padding: 1rem 0;
+}
+
+.header.transparent {
+    background: transparent;
+}
+
+.header.scrolled {
+    background: rgba(11, 46, 70, 0.97);
+    box-shadow: var(--shadow-lg);
+    padding: 0.5rem 0;
+    backdrop-filter: blur(10px);
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-logo img {
+    height: 44px;
+    width: auto;
+    transition: height 0.3s;
+}
+
+.header.scrolled .header-logo img {
+    height: 36px;
+}
+
+.header-logo span {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-links a,
+.nav-links .btn {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: color 0.15s;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    transition: width 0.3s;
+}
+
+.nav-links a:hover {
+    color: #fff;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.nav-links a.active {
+    color: #fff;
+}
+
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(20deg);
+}
+
+.btn-sm {
+    padding: 6px 16px;
+}
+
+.btn-outline {
+    border: 2px solid #fff;
+    color: #fff !important;
+    background: transparent;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background: #fff;
+    color: var(--blue-900) !important;
+}
+
+.header-right-mobile {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: none;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #fff;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--blue-950), var(--blue-800));
+    z-index: var(--z-overlay);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.mobile-menu.active {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-menu a {
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    transition: color 0.15s;
+}
+
+.mobile-menu a:hover {
+    color: var(--color-accent);
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    color: #fff;
+    font-size: 1.875rem;
+    cursor: pointer;
+    border: none;
+}
+
+@media(max-width:768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .header-right-mobile {
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}

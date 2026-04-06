@@ -1,0 +1,410 @@
+/* ═══ Hero Section ═══ */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(165deg, #061526 0%, var(--blue-950) 25%, var(--blue-800) 50%, var(--blue-700) 75%, #0a4a6e 100%);
+    overflow: hidden;
+    padding: 2rem;
+}
+
+/* ── Background Effects ── */
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 30% 40%, rgba(11, 146, 213, 0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 60%, rgba(212, 168, 67, 0.08) 0%, transparent 50%);
+    animation: pulseGradient 8s ease-in-out infinite alternate;
+}
+
+.hero-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 20h20v20H20z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+}
+
+.hero-orb-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--blue-400);
+    top: -150px;
+    left: -100px;
+    animation: orbDrift 12s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+    width: 350px;
+    height: 350px;
+    background: var(--gold);
+    bottom: -100px;
+    right: -50px;
+    animation: orbDrift 15s ease-in-out infinite 3s;
+}
+
+.hero-orb-3 {
+    width: 250px;
+    height: 250px;
+    background: var(--blue-300);
+    top: 40%;
+    right: 20%;
+    animation: orbDrift 10s ease-in-out infinite 6s;
+}
+
+@keyframes orbDrift {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(30px, -20px) scale(1.05);
+    }
+
+    50% {
+        transform: translate(-15px, 25px) scale(0.95);
+    }
+
+    75% {
+        transform: translate(20px, 10px) scale(1.02);
+    }
+}
+
+/* ── Content ── */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+}
+
+/* ── Badge ── */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    animation: fadeInDown 0.8s ease 0.2s both;
+}
+
+.hero-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(212, 168, 67, 0.6);
+    animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+/* ── Escudo ── */
+.hero-escudo-wrapper {
+    margin-bottom: 2rem;
+    text-align: center;
+    animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.hero-escudo {
+    width: 130px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(212, 168, 67, 0.15));
+    animation: floatEscudo 6s ease-in-out infinite;
+    transition: transform 0.4s;
+}
+
+.hero-escudo:hover {
+    transform: scale(1.08);
+}
+
+/* ── Title ── */
+.hero-title {
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.hero-title-liceo {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+.hero-title-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 40%, var(--gold) 70%, #ffffff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+    text-shadow: none;
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ── Subtitle ── */
+.hero-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.8;
+    max-width: 550px;
+    margin: 0 auto 2.5rem;
+    animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+/* ── Buttons ── */
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease 1s both;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(11, 146, 213, 0.4);
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(11, 146, 213, 0.5);
+    color: #fff;
+}
+
+.btn-lg {
+    padding: 1rem 2.25rem;
+    font-size: 0.9375rem;
+}
+
+.btn-outline-hero {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    background: transparent;
+    backdrop-filter: blur(4px);
+}
+
+.btn-outline-hero:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--blue-950);
+    box-shadow: 0 4px 20px rgba(212, 168, 67, 0.4);
+}
+
+.btn-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(212, 168, 67, 0.5);
+    color: var(--blue-950);
+}
+
+.btn-gold .btn-arrow {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+.btn-gold:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+/* ── Scroll Indicator ── */
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    animation: fadeInUp 0.8s ease 1.4s both;
+}
+
+.hero-scroll-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 500;
+}
+
+.hero-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ── Keyframes ── */
+@keyframes pulseGradient {
+    0% {
+        opacity: .5;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes floatEscudo {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scrollPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: scaleY(0.5);
+    }
+}
+
+/* ── Responsive ── */
+@media(max-width:768px) {
+    .hero-escudo {
+        width: 100px;
+    }
+
+    .hero-title-liceo {
+        letter-spacing: 4px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-scroll-indicator {
+        bottom: 1.5rem;
+    }
+}

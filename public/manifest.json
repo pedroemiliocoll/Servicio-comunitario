@@ -1,0 +1,67 @@
+{
+  "name": "U.E.N. Pedro Emilio Coll",
+  "short_name": "Liceo Pedro Coll",
+  "description": "Institución educativa de excelencia académica. Educación primaria y media general.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b92d5",
+  "theme_color": "#0b92d5",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "categories": ["education", "news"],
+  "icons": [
+    {
+      "src": "/assets/images/escudo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/escudo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/escudo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/hero-facade.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Vista principal del liceo"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Noticias",
+      "short_name": "Noticias",
+      "description": "Ver últimas noticias del liceo",
+      "url": "/noticias",
+      "icons": [{ "src": "/assets/images/escudo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Galería",
+      "short_name": "Galería",
+      "description": "Ver fotos del liceo",
+      "url": "/galeria",
+      "icons": [{ "src": "/assets/images/escudo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Contacto",
+      "short_name": "Contacto",
+      "description": "Contactar al liceo",
+      "url": "/contacto",
+      "icons": [{ "src": "/assets/images/escudo.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
