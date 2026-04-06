@@ -35,16 +35,22 @@ import activityRoutes      from '../server/routes/activityRoutes.js';
 
 const app = express();
 
-// Background initialization
 const startServices = async () => {
     try {
         await initializeDatabase();
-        // If we want auto-migration without migration files, we'd do it here.
-        // For now, we rely on drizzle-kit push having worked or failing gracefully.
-        await seedDatabase();
-        console.log('✅ Services started successfully');
+        
+        // Check if tables exist before attempting to seed
+        const rawResult = await client.execute("SELECT name FROM sqlite_master WHERE type = 'table'");
+        const allTablesInDb = rawResult.rows.map(r => r.name);
+        
+        if (allTablesInDb.includes('users')) {
+            await seedDatabase();
+            console.log('✅ Services started successfully');
+        } else {
+            console.log('⚠️ Database is empty. Skipping seed. Please push your Drizzle schema.');
+        }
     } catch (err) {
-        console.error('❌ ERROR starting services:', err);
+        console.error('❌ ERROR starting services:', err.message);
     }
 };
 
