@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { db } from '../config/database.js';
 import { requireAuth } from '../middleware/auth.js';
-import { news, events, gallery, contactMessages, contactReplies, chatConversations, analytics, settings, aiResponses, users } from '../db/schema.js';
+import { news, events, gallery, contactMessages, contactReplies, chatConversations, aiConfig, aiCustomResponses, settings, activityLog, users, chatbotAnalytics } from '../db/schema.js';
 
 const router = Router();
 
@@ -22,9 +22,11 @@ router.get('/export', requireAuth, async (_req, res) => {
         backup.data.contactMessages = await db.select().from(contactMessages);
         backup.data.contactReplies = await db.select().from(contactReplies);
         backup.data.chatConversations = await db.select().from(chatConversations);
-        backup.data.analytics = await db.select().from(analytics);
+        backup.data.analytics = await db.select().from(chatbotAnalytics);
         backup.data.settings = await db.select().from(settings);
-        backup.data.aiResponses = await db.select().from(aiResponses);
+        backup.data.aiResponses = await db.select().from(aiCustomResponses);
+        backup.data.aiConfig = await db.select().from(aiConfig);
+        backup.data.activityLog = await db.select().from(activityLog);
 
         // En Vercel no guardamos a disco, enviamos directamente al cliente
         res.setHeader('Content-Type', 'application/json');

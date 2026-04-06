@@ -16,6 +16,12 @@ export function errorHandler(err, req, res, next) {
 
     if (status >= 500) {
         logError(err, req);
+        // Deeper logging for Vercel troubleshooting
+        console.error('--- INTERNAL SERVER ERROR DETAILS ---');
+        console.error('Message:', err.message);
+        console.error('Code:', err.code);
+        console.error('Stack:', err.stack);
+        console.error('-------------------------------------');
     } else if (status >= 400) {
         logSecurity('client_error', errorLog);
     }

@@ -8,8 +8,13 @@ import { createClient } from '@libsql/client';
 import * as schema from '../db/schema.js';
 
 // Setup connection details
-const url = process.env.TURSO_DATABASE_URL || 'file:server/data/liceo.db';
+const isVercel = !!process.env.VERCEL;
+const url = process.env.TURSO_DATABASE_URL || (isVercel ? '' : 'file:server/data/liceo.db');
 const authToken = process.env.TURSO_AUTH_TOKEN;
+
+if (isVercel && !url) {
+    console.error('❌ CRITICAL: TURSO_DATABASE_URL is missing in Vercel environment!');
+}
 
 // Create libSQL client (HTTP optimized for Vercel/Serverless)
 const client = createClient({
