@@ -12,11 +12,11 @@ const isVercel = !!process.env.VERCEL;
 const url = process.env.TURSO_DATABASE_URL;
 const authToken = process.env.TURSO_AUTH_TOKEN;
 
-// Fallback logic with better reporting
-const connectionUrl = url || (isVercel ? '' : 'file:server/data/liceo.db');
+// Hard-force URL for Vercel
+const connectionUrl = (isVercel && url) ? url : (url || 'file:server/data/liceo.db');
 
 if (isVercel && !url) {
-    console.error('❌ CRITICAL: TURSO_DATABASE_URL is missing in Vercel environment! The app has no database to connect to.');
+    console.error('❌ CRITICAL: TURSO_DATABASE_URL is missing in Vercel environment!');
 }
 
 // Create libSQL client

@@ -118,18 +118,19 @@ app.get('/api/cron/publish-news', async (req, res) => {
     }
 });
 
-app.get('/api/health', async (_req, res) => {
-    let dbStatus = 'connecting';
-    let dbError = null;
     let tablesFound = [];
+    let allTablesInDb = [];
 
     try {
-        // Test query (check multiple tables to ensure schema is fully pushed)
+        // List all tables actually in the database
+        const tablesQuery = await db.select({ name: sql`name` }).from(sql`sqlite_master`).where(sql`type = 'table'`);
+        allTablesInDb = tablesQuery.map(t => t.name);
+
+        // Test specific queries
         await UserModel.count();
         tablesFound.push('users');
         
-        // This confirms the contact_messages table is also there
-        const result = await db.select({ count: sql`count(*)` }).from(contactMessages);
+        await db.select({ count: sql`count(*)` }).from(contactMessages);
         tablesFound.push('contact_messages');
         
         dbStatus = 'ok';
@@ -142,12 +143,13 @@ app.get('/api/health', async (_req, res) => {
     res.json({
         status: dbStatus === 'ok' ? 'ok' : 'degraded',
         timestamp: new Date().toISOString(),
-        version: '2.4.2-diag',
+        version: '2.4.3-deep-diag',
         database: {
             status: dbStatus,
             error: dbError,
-            tablesChecked: tablesFound,
-            url: process.env.TURSO_DATABASE_URL ? `${process.env.TURSO_DATABASE_URL.substring(0, 15)}...` : 'MISSING'
+            tablesMapped: tablesFound,
+            allTablesInDatabase: allTablesInDb,
+            url: process.env.TURSO_DATABASE_URL ? `${process.env.TURSO_DATABASE_URL.substring(0, 20)}...` : 'MISSING'
         },
         environment: {
             nodeEnv: process.env.NODE_ENV,
@@ -155,7 +157,6 @@ app.get('/api/health', async (_req, res) => {
             hasTursoConfig: !!(process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN)
         }
     });
-});
 
 // Swagger API Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
