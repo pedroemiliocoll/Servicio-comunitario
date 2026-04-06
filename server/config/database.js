@@ -9,16 +9,19 @@ import * as schema from '../db/schema.js';
 
 // Setup connection details
 const isVercel = !!process.env.VERCEL;
-const url = process.env.TURSO_DATABASE_URL || (isVercel ? '' : 'file:server/data/liceo.db');
+const url = process.env.TURSO_DATABASE_URL;
 const authToken = process.env.TURSO_AUTH_TOKEN;
 
+// Fallback logic with better reporting
+const connectionUrl = url || (isVercel ? '' : 'file:server/data/liceo.db');
+
 if (isVercel && !url) {
-    console.error('❌ CRITICAL: TURSO_DATABASE_URL is missing in Vercel environment!');
+    console.error('❌ CRITICAL: TURSO_DATABASE_URL is missing in Vercel environment! The app has no database to connect to.');
 }
 
-// Create libSQL client (HTTP optimized for Vercel/Serverless)
+// Create libSQL client
 const client = createClient({
-    url: url,
+    url: connectionUrl,
     authToken: authToken,
 });
 

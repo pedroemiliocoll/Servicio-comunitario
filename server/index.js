@@ -142,11 +142,12 @@ app.get('/api/health', async (_req, res) => {
     res.json({
         status: dbStatus === 'ok' ? 'ok' : 'degraded',
         timestamp: new Date().toISOString(),
-        version: '2.4.1-vercel',
+        version: '2.4.2-diag',
         database: {
             status: dbStatus,
             error: dbError,
-            tablesChecked: tablesFound
+            tablesChecked: tablesFound,
+            url: process.env.TURSO_DATABASE_URL ? `${process.env.TURSO_DATABASE_URL.substring(0, 15)}...` : 'MISSING'
         },
         environment: {
             nodeEnv: process.env.NODE_ENV,
