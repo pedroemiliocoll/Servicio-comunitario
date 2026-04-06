@@ -135,6 +135,6 @@ export const UserModel = {
 
     async count() {
         const result = await db.select({ count: sql`count(*)` }).from(users);
-        return result[0].count;
+        return Number(result[0]?.count ?? 0);
     }
 };

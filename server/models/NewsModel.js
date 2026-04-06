@@ -26,9 +26,9 @@ export const NewsModel = {
         const id = nanoid();
         const status = data.scheduled_at ? 'scheduled' : (data.status || 'published');
         
-        const maxResult = await db.select({ max: sql`MAX(${news.orden})` }).from(news);
-        const maxOrden = maxResult[0]?.max || 0;
-        const orden = data.orden ?? (Number(maxOrden) + 1);
+        const maxResult = await db.select({ max: sql`max(${news.orden})` }).from(news);
+        const maxOrden = Number(maxResult[0]?.max ?? 0);
+        const orden = data.orden ?? (maxOrden + 1);
 
         await db.insert(news).values({
             id,
@@ -86,6 +86,6 @@ export const NewsModel = {
 
     async count() {
         const result = await db.select({ count: sql`count(*)` }).from(news);
-        return result[0].count;
+        return Number(result[0]?.count ?? 0);
     }
 };

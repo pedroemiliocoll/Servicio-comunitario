@@ -42,7 +42,7 @@ export const ContactModel = {
 
     async countUnread() {
         const result = await db.select({ count: sql`count(*)` }).from(contactMessages).where(eq(contactMessages.leido, 0));
-        return result[0].count;
+        return Number(result[0]?.count ?? 0);
     },
 
     // Búsqueda con filtros
@@ -101,7 +101,7 @@ export const ContactModel = {
         const result = await db.select({ count: sql`count(*)` })
             .from(contactReplies)
             .where(eq(contactReplies.messageId, messageId));
-        return result[0].count;
+        return Number(result[0]?.count ?? 0);
     },
 
     // Exportar

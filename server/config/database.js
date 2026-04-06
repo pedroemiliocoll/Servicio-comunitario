@@ -11,10 +11,10 @@ import * as schema from '../db/schema.js';
 const url = process.env.TURSO_DATABASE_URL || 'file:server/data/liceo.db';
 const authToken = process.env.TURSO_AUTH_TOKEN;
 
-// Create libSQL client
+// Create libSQL client (HTTP optimized for Vercel/Serverless)
 const client = createClient({
-    url,
-    authToken,
+    url: url,
+    authToken: authToken,
 });
 
 // Initialize Drizzle

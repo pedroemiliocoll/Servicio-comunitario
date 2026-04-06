@@ -8,35 +8,16 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/uploads/(.*)",
-      "dest": "https://<BLOB_STORE_URL>/$1" 
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "server/index.js" },
+    { "src": "/uploads/(.*)", "dest": "https://<BLOB_STORE_URL>/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ],
   "crons": [
-    {
-      "path": "/api/cron/publish-news",
-      "schedule": "0 0 * * *" 
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+    { "path": "/api/cron/publish-news", "schedule": "0 0 * * *" }
+  ]
 }

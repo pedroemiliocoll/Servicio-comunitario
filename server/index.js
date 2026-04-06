@@ -39,10 +39,19 @@ if (process.env.NODE_ENV !== 'production') {
     // Pero en Vercel esto fallará o será inútil.
 }
 
-// Inicialización asíncrona (Vercel cargará el módulo una vez por instancia)
-initializeDatabase().then(() => {
-    seedDatabase().catch(err => console.error('Seed error:', err));
-});
+// Background initialization (Don't block the startup of the serverless function)
+const startServices = async () => {
+    try {
+        await initializeDatabase();
+        // Only seed if we're not explicitly in production or if it's the first run
+        await seedDatabase();
+        console.log('✅ Services started successfully');
+    } catch (err) {
+        console.error('❌ ERROR starting services:', err);
+    }
+};
+
+startServices();
 
 const app = express();
 
