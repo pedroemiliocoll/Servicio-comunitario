@@ -7,7 +7,9 @@ import { mkdirSync, existsSync } from 'fs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LOG_DIR = path.join(__dirname, '..', 'logs');
 
-if (!existsSync(LOG_DIR)) {
+const isVercel = !!process.env.VERCEL;
+
+if (!existsSync(LOG_DIR) && !isVercel) {
     mkdirSync(LOG_DIR, { recursive: true });
 }
 
@@ -29,11 +31,16 @@ const jsonFormat = winston.format.combine(
     winston.format.json()
 );
 
-const logger = winston.createLogger({
-    level: process.env.LOG_LEVEL || 'info',
-    format: jsonFormat,
-    defaultMeta: { service: 'liceo-api', version: '2.1.0' },
-    transports: [
+const transports = [
+    new winston.transports.Console({
+        format: logFormat,
+        level: 'debug'
+    })
+];
+
+// Solo añadir transporte de archivos si NO estamos en Vercel
+if (!isVercel) {
+    transports.push(
         new winston.transports.File({
             filename: path.join(LOG_DIR, 'error.log'),
             level: 'error',
@@ -45,7 +52,14 @@ const logger = winston.createLogger({
             maxsize: 5242880,
             maxFiles: 5
         })
-    ]
+    );
+}
+
+const logger = winston.createLogger({
+    level: process.env.LOG_LEVEL || 'info',
+    format: isVercel ? jsonFormat : logFormat,
+    defaultMeta: { service: 'liceo-api', version: '2.4.1' },
+    transports
 });
 
 if (process.env.NODE_ENV !== 'production') {
@@ -59,7 +73,7 @@ export const auditLogger = winston.createLogger({
     level: 'info',
     format: jsonFormat,
     defaultMeta: { service: 'liceo-audit' },
-    transports: [
+    transports: isVercel ? [new winston.transports.Console()] : [
         new winston.transports.File({
             filename: path.join(LOG_DIR, 'audit.log'),
             maxsize: 10485760,

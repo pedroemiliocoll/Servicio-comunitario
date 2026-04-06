@@ -120,7 +120,10 @@ export const authController = {
         }
 
         const { token, user } = result;
-        const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${token}`;
+        const baseUrl = process.env.FRONTEND_URL && !process.env.FRONTEND_URL.includes('localhost') 
+            ? process.env.FRONTEND_URL 
+            : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5173');
+        const resetUrl = `${baseUrl}/reset-password/${token}`;
         const emailResult = await emailService.sendPasswordResetEmail(user.email, user.username, token, resetUrl);
         
         await logActivity('PASSWORD_RESET_REQUESTED', `Usuario '${user.username}' solicitó recuperación de contraseña`);

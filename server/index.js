@@ -28,6 +28,10 @@ import backupRoutes        from './routes/backupRoutes.js';
 import analyticsRoutes     from './routes/analyticsRoutes.js';
 import activityRoutes      from './routes/activityRoutes.js';
 import { NewsModel }       from './models/NewsModel.js';
+import { UserModel }       from './models/UserModel.js';
+import { db }              from './config/database.js';
+import { contactMessages } from './db/schema.js';
+import { sql }             from 'drizzle-orm';
 
 // No usamos mkdirSync en Vercel (Filesystem efímero/read-only)
 if (process.env.NODE_ENV !== 'production') {
@@ -105,11 +109,43 @@ app.get('/api/cron/publish-news', async (req, res) => {
     }
 });
 
-app.get('/api/health', (_req, res) => res.json({
-    status: 'ok', 
-    timestamp: new Date().toISOString(), 
-    version: '2.4.0-vercel'
-}));
+app.get('/api/health', async (_req, res) => {
+    let dbStatus = 'connecting';
+    let dbError = null;
+    let tablesFound = [];
+
+    try {
+        // Test query (check multiple tables to ensure schema is fully pushed)
+        await UserModel.count();
+        tablesFound.push('users');
+        
+        // This confirms the contact_messages table is also there
+        const result = await db.select({ count: sql`count(*)` }).from(contactMessages);
+        tablesFound.push('contact_messages');
+        
+        dbStatus = 'ok';
+    } catch (err) {
+        dbStatus = 'error';
+        dbError = err.message;
+        console.error('DATABASE_HEALTH_CHECK_FAILED:', err);
+    }
+
+    res.json({
+        status: dbStatus === 'ok' ? 'ok' : 'degraded',
+        timestamp: new Date().toISOString(),
+        version: '2.4.1-vercel',
+        database: {
+            status: dbStatus,
+            error: dbError,
+            tablesChecked: tablesFound
+        },
+        environment: {
+            nodeEnv: process.env.NODE_ENV,
+            isVercel: !!process.env.VERCEL,
+            hasTursoConfig: !!(process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN)
+        }
+    });
+});
 
 // Swagger API Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -130,7 +166,7 @@ process.on('unhandledRejection', (reason) => {
 
 // En Vercel no usamos app.listen(), exportamos la app.
 // Pero dejamos esto para compatibilidad local.
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     const PORT = process.env.PORT || 3001;
     app.listen(PORT, () => {
         console.log(`🚀 Servidor dev en http://localhost:${PORT}`);
