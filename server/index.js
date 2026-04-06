@@ -118,6 +118,8 @@ app.get('/api/cron/publish-news', async (req, res) => {
     }
 });
 
+    let dbStatus = 'connecting';
+    let dbError = null;
     let tablesFound = [];
     let allTablesInDb = [];
 
