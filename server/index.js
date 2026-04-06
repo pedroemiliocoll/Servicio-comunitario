@@ -29,7 +29,7 @@ import analyticsRoutes     from './routes/analyticsRoutes.js';
 import activityRoutes      from './routes/activityRoutes.js';
 import { NewsModel }       from './models/NewsModel.js';
 import { UserModel }       from './models/UserModel.js';
-import { db }              from './config/database.js';
+import { db, client }      from './config/database.js';
 import { contactMessages } from './db/schema.js';
 import { sql }             from 'drizzle-orm';
 
@@ -122,9 +122,9 @@ app.get('/api/cron/publish-news', async (req, res) => {
     let allTablesInDb = [];
 
     try {
-        // List all tables actually in the database
-        const tablesQuery = await db.select({ name: sql`name` }).from(sql`sqlite_master`).where(sql`type = 'table'`);
-        allTablesInDb = tablesQuery.map(t => t.name);
+        // Safe way to list tables using the raw client to avoid Drizzle parsing errors during boot
+        const rawResult = await client.execute("SELECT name FROM sqlite_master WHERE type = 'table'");
+        allTablesInDb = rawResult.rows.map(r => r.name);
 
         // Test specific queries
         await UserModel.count();
