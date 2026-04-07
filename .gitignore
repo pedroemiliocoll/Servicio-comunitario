@@ -29,3 +29,8 @@ dist-ssr
 public/uploads/*
 !public/uploads/.gitkeep
 nul
+
+# Sensitive data and tools
+server/backups/
+server/data/liceo.db
+git-filter-repo
