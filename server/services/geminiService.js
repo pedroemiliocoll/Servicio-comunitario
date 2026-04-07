@@ -67,7 +67,7 @@ function buildSystemPrompt(liceoInfo, aiConfig, customResponses) {
  * Envía un mensaje a Gemini con retry logic.
  */
 export async function streamChatMessage(message, res, onContent) {
-    let apiKey = SettingsModel.getApiKey() || process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY;
+    let apiKey = (await SettingsModel.getApiKey()) || process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY;
     if (!apiKey) {
         res.write(`data: ${JSON.stringify({ error: 'API key no configurada. Ve al panel de admin → Configuración.' })}\n\n`);
         res.end();
@@ -75,9 +75,9 @@ export async function streamChatMessage(message, res, onContent) {
     }
     apiKey = apiKey.trim();
 
-    const liceoInfo = SettingsModel.getLiceoInfo();
-    const aiConfig  = AiConfigModel.getConfig();
-    const customResponses = AiConfigModel.getEnabledResponses();
+    const liceoInfo = await SettingsModel.getLiceoInfo();
+    const aiConfig  = await AiConfigModel.getConfig();
+    const customResponses = await AiConfigModel.getEnabledResponses();
     const systemPrompt = buildSystemPrompt(liceoInfo, aiConfig, customResponses);
 
     let fullText = '';
