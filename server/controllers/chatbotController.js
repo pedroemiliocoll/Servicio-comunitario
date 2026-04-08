@@ -54,9 +54,16 @@ export const chatbotController = {
     },
 
     async getFeedbackStats(req, res) {
-        const stats = await ConversationModel.getFeedbackStats();
+        const rawStats = await ConversationModel.getFeedbackStats();
         const sessionStats = await ConversationModel.getSessionStats();
-        res.json({ feedback: stats, sessions: sessionStats });
+        
+        // Transformar array [{rating, count}] en object {positive, negative...}
+        const stats = { positive: 0, negative: 0, neutral: 0 };
+        rawStats.forEach(r => {
+            if (stats[r.rating] !== undefined) stats[r.rating] = r.count;
+        });
+        
+        res.json({ ...stats, sessions: sessionStats });
     },
 
     // ── Analytics ─────────────────────────────────────────────────────────────
@@ -67,14 +74,21 @@ export const chatbotController = {
     
     async getSummary(req, res) {
         const sessionStats = await AnalyticsModel.getSessionStats();
+        const rawFeedback = await ConversationModel.getFeedbackStats();
+        
+        const f = { positive: 0, negative: 0 };
+        rawFeedback.forEach(r => { if (f[r.rating] !== undefined) f[r.rating] = r.count; });
+        const totalF = f.positive + f.negative;
+        const satisfaction = totalF > 0 ? Math.round((f.positive / totalF) * 100) : 0;
+
         res.json({
-            total: await AnalyticsModel.getTotalCount(),
-            today: await AnalyticsModel.getTodayCount(),
+            totalMessages: await AnalyticsModel.getTotalCount(),
+            todayCount: await AnalyticsModel.getTodayCount(),
             daily: await AnalyticsModel.getDailyCounts(7),
             categories: await AnalyticsModel.getCategoryCounts(),
             uniqueUsers: sessionStats.activeLast24h,
-            avgMessages: sessionStats.avgMessages,
-            satisfaction: 0
+            avgDaily: sessionStats.avgMessages,
+            satisfaction
         });
     },
 

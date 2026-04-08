@@ -77,10 +77,26 @@ app.use((req, res, next) => {
             if (Array.isArray(obj)) return obj.map(convertObj);
             if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
                 const n = {};
+                // Mapeo específico de campos que el frontend espera en snake_case
+                // para no romper objetos que deben mantener camelCase (como config del chatbot)
+                const snakeMappings = {
+                    'imageUrl': 'image_url',
+                    'scheduledAt': 'scheduled_at',
+                    'startedAt': 'started_at',
+                    'messageCount': 'message_count',
+                    'totalMessages': 'total_messages',
+                    'todayCount': 'today_count',
+                    'avgDaily': 'avg_daily',
+                    'uniqueUsers': 'unique_users',
+                    'lastActive': 'last_active',
+                    'sessionId': 'session_id',
+                    'firstQuestion': 'first_question',
+                    'replyCount': 'reply_count'
+                };
+                
                 for (const k of Object.keys(obj)) {
-                    // Solo convertir si es camelCase (letra pequeña seguida de letra grande)
-                    const snakeKey = k.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
-                    n[snakeKey] = convertObj(obj[k]);
+                    const targetKey = snakeMappings[k] || k;
+                    n[targetKey] = convertObj(obj[k]);
                 }
                 return n;
             }
