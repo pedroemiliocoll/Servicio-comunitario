@@ -49,7 +49,7 @@ export const ConversationModel = {
     },
 
     async getRecent(limit = 50) {
-        // En Drizzle, las consultas complejas con GROUP BY y subconsultas a veces son más fáciles con sql``
+        // En Drizzle, usamos db.all para raw queries que devuelven multiples filas
         return await db.all(sql`
             SELECT c.session_id as sessionId,
                    MIN(c.timestamp) as startedAt,

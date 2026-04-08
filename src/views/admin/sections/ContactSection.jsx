@@ -63,7 +63,11 @@ export default function ContactSection({ showToast }) {
             }
             setReplyText('');
             await loadReplies(selected.id);
-            showToast(result.email?.sent ? 'Respuesta enviada por email' : 'Respuesta guardada (email no configurado)');
+            if (!sendEmail) {
+                showToast('Borrador de respuesta guardado correctamente');
+            } else {
+                showToast(result.email?.sent ? 'Respuesta enviada por email' : 'Respuesta guardada pero email no enviado (revisa config)');
+            }
         } catch (err) {
             showToast(err.message || 'Error al enviar respuesta', 'error');
         }

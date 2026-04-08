@@ -46,7 +46,8 @@ export const uploadToBlob = async (fileBuffer, filename) => {
     
     const blob = await put(uniqueName, fileBuffer, {
         access: 'public',
-        contentType: 'image/webp'
+        contentType: 'image/webp',
+        token: process.env.BLOB_READ_WRITE_TOKEN
     });
     
     return blob.url;
