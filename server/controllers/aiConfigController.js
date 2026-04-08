@@ -60,7 +60,15 @@ export const aiConfigController = {
             }
         }
 
-        const updated = await AiConfigModel.updateConfig(data);
+        const mappedData = {};
+        for (const [key, value] of Object.entries(data)) {
+            const camelKey = key.replace(/([-_][a-z])/ig, ($1) => {
+                return $1.toUpperCase().replace('-', '').replace('_', '');
+            });
+            mappedData[camelKey] = value;
+        }
+
+        const updated = await AiConfigModel.updateConfig(mappedData);
         await logActivity('AI_CONFIG_UPDATE', 'Configuración de IA actualizada');
         res.json(updated);
     },

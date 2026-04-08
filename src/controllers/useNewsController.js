@@ -127,7 +127,11 @@ export function useNewsAdmin(showToast) {
     };
 
     const edit = (item) => {
-        setForm(item);
+        setForm({
+            ...item,
+            image_url: item.imageUrl || '',
+            scheduled_at: item.scheduledAt || ''
+        });
         setEditing(item.id);
         setShowForm(true);
     };

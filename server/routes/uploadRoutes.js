@@ -6,10 +6,13 @@ import path            from 'path';
 import { requireAuth } from '../middleware/auth.js';
 import { nanoid }      from 'nanoid';
 
+import multer          from 'multer';
+
 const router = Router();
 
 // Buffer limit for sharp processing (e.g., 5MB)
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_FILE_SIZE } });
 
 /**
  * Optimiza una imagen antes de subirla a Vercel Blob.
@@ -34,59 +37,42 @@ async function optimizeImageBuffer(buffer) {
 }
 
 /**
- * Endpoint de subida
- */
-router.post('/', requireAuth, async (req, res) => {
-    // Para entornos serverless, usamos stream o buffer de Express si está habilitado.
-    // Aquí implementamos una aproximación sencilla para el handler de Vercel.
-    
-    // Si usas express.raw() o similar, el body contiene el buffer.
-    // Si usas multer con memory storage (mejor para este caso):
-    // Pero como estamos refactorizando para Vercel Blob, usaremos la integración directa.
-    
-    // NOTA: Para Vercel Blob en un entorno Express tradicional, el cliente puede enviar
-    // el archivo directamente. Aquí simulamos la recepción de un buffer.
-    
-    // En una app real de Vercel/Next.js, usaríamos handleUpload.
-    // Para este Express bridge, asumimos que el body contiene el buffer o usamos un middleware ligero.
-    
-    // Como el user aprobó usar sharp, procesaremos el buffer recibido.
-    
-    if (!req.body || !Buffer.isBuffer(req.body)) {
-        // Si no es un buffer, puede que necesitemos un middleware para parsear multipart.
-        // Pero para simplificar el refactor a Vercel Blob, usaremos el SDK de put().
-    }
-
-    // Por simplicidad, implementamos la lógica de subida asumiendo que el archivo viene en req.file (vía multer memory storage)
-    // o que el usuario configurará su cliente para enviar el archivo correctamente.
-    
-    // Adaptación a Vercel Blob:
-    // 1. Recibir archivo (vía multipart)
-    // 2. Optimizar con sharp
-    // 3. Subir a Vercel Blob
-    
-    res.status(501).json({ 
-        error: 'Refactorización en curso: Vercel Blob requiere integración con cliente o busboy.',
-        notice: 'Este archivo ha sido actualizado para usar @vercel/blob, pero el endpoint requiere un parser de multipart compatible con Vercel (como busboy).' 
-    });
-});
-
-/**
  * Versión simplificada para Vercel Blob:
- * El cliente puede subir directamente a Vercel Blob desde el frontend con un token firmado.
- * Pero para mantener el 'proxy' del servidor:
+ * Sube al Blob storage y retorna URL.
  */
 export const uploadToBlob = async (fileBuffer, filename) => {
     const ext = path.extname(filename).toLowerCase();
-    const uniqueName = `uploads/${nanoid()}${ext}`;
+    const uniqueName = `uploads/${nanoid()}${ext === '.webp' ? '.webp' : '.webp'}`; // Because we convert to webp
     
     const blob = await put(uniqueName, fileBuffer, {
         access: 'public',
-        contentType: `image/${ext.replace('.','')}`
+        contentType: 'image/webp'
     });
     
     return blob.url;
 };
+
+/**
+ * Endpoint de subida
+ */
+router.post('/', requireAuth, upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se incluyó ninguna imagen.' });
+        }
+
+        const { buffer } = await optimizeImageBuffer(req.file.buffer);
+        // Usamos el originalname para la base, aunque lo convertimos a webp.
+        const url = await uploadToBlob(buffer, req.file.originalname);
+
+        res.json({ url });
+    } catch (error) {
+        console.error('Upload Error:', error);
+        res.status(500).json({ error: 'Fallo procesando y subiendo la imagen.' });
+    }
+});
+
+
 
 // ... logic to delete blob
 router.delete('/:filename', requireAuth, async (req, res) => {

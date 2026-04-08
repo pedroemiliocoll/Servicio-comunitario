@@ -85,7 +85,7 @@ export const NewsModel = {
     },
 
     async count() {
-        const result = await db.select({ count: sql`count(*)` }).from(news);
-        return Number(result[0]?.count ?? 0);
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(news);
+        return result[0]?.count || 0;
     }
 };

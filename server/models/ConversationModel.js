@@ -53,7 +53,7 @@ export const ConversationModel = {
         return await db.all(sql`
             SELECT c.session_id as sessionId,
                    MIN(c.timestamp) as startedAt,
-                   COUNT(*) as messageCount,
+                   CAST(COUNT(*) AS INTEGER) as messageCount,
                    (SELECT content FROM chat_conversations
                     WHERE session_id = c.session_id AND role = 'user'
                     ORDER BY timestamp ASC LIMIT 1) as firstQuestion
@@ -72,7 +72,7 @@ export const ConversationModel = {
     },
 
     async totalSessions() {
-        const result = await db.select({ count: sql`count(*)` }).from(chatbotSessions);
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(chatbotSessions);
         return result[0]?.count || 0;
     },
 
@@ -86,15 +86,15 @@ export const ConversationModel = {
     async getFeedbackStats() {
         return await db.select({ 
             rating: chatbotFeedback.rating, 
-            count: sql`count(*)` 
+            count: sql`count(*)`.mapWith(Number) 
         })
         .from(chatbotFeedback)
         .groupBy(chatbotFeedback.rating);
     },
 
     async getSessionStats() {
-        const totalResult = await db.select({ count: sql`count(*)` }).from(chatbotSessions);
-        const totalMessagesResult = await db.select({ total: sql`SUM(${chatbotSessions.messageCount})` }).from(chatbotSessions);
+        const totalResult = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(chatbotSessions);
+        const totalMessagesResult = await db.select({ total: sql`SUM(${chatbotSessions.messageCount})`.mapWith(Number) }).from(chatbotSessions);
         const recentSessions = await db.select().from(chatbotSessions)
             .orderBy(desc(chatbotSessions.lastActive))
             .limit(10);

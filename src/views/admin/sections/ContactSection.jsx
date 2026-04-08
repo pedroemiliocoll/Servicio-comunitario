@@ -55,7 +55,12 @@ export default function ContactSection({ showToast }) {
         
         setSendingReply(true);
         try {
-            const result = await contactService.reply(selected.id, replyText, sendEmail);
+            let result;
+            if (sendEmail) {
+                result = await contactService.reply(selected.id, replyText, true);
+            } else {
+                result = await contactService.replyOnly(selected.id, replyText);
+            }
             setReplyText('');
             await loadReplies(selected.id);
             showToast(result.email?.sent ? 'Respuesta enviada por email' : 'Respuesta guardada (email no configurado)');

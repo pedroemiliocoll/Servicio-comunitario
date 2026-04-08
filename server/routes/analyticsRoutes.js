@@ -51,13 +51,13 @@ router.get('/stats', requireAuth, async (_req, res) => {
             } else if (period === 'month') {
                 filter = and(filter, sql`${analyticsEvents.timestamp} >= datetime('now', '-30 days')`);
             }
-            const result = await db.select({ count: sql`COUNT(*)` }).from(analyticsEvents).where(filter);
+            const result = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(analyticsEvents).where(filter);
             return result[0]?.count || 0;
         };
 
         const topPages = await db.select({ 
             url: analyticsEvents.url, 
-            views: sql`COUNT(*)` 
+            views: sql`COUNT(*)`.mapWith(Number) 
         }).from(analyticsEvents)
           .where(eq(analyticsEvents.eventType, 'pageview'))
           .groupBy(analyticsEvents.url)
@@ -67,7 +67,7 @@ router.get('/stats', requireAuth, async (_req, res) => {
         const topEvents = await db.select({ 
             category: analyticsEvents.category, 
             action: analyticsEvents.action, 
-            count: sql`COUNT(*)` 
+            count: sql`COUNT(*)`.mapWith(Number) 
         }).from(analyticsEvents)
           .where(eq(analyticsEvents.eventType, 'event'))
           .groupBy(analyticsEvents.category, analyticsEvents.action)
@@ -97,7 +97,7 @@ router.get('/stats', requireAuth, async (_req, res) => {
 router.get('/portal', requireAuth, async (_req, res) => {
     try {
         const getCount = async (table) => {
-            const res = await db.select({ count: sql`COUNT(*)` }).from(table);
+            const res = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(table);
             return res[0]?.count || 0;
         };
 
@@ -109,7 +109,7 @@ router.get('/portal', requireAuth, async (_req, res) => {
         };
 
         // Mensajes de contacto
-        const unreadMessages = await db.select({ count: sql`COUNT(*)` }).from(contactMessages).where(eq(contactMessages.leido, false));
+        const unreadMessages = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(contactMessages).where(eq(contactMessages.leido, false));
         const lastMsg = await db.select({ timestamp: contactMessages.timestamp }).from(contactMessages).orderBy(desc(contactMessages.timestamp)).limit(1);
         
         stats.contactMessages = await getCount(contactMessages);
@@ -117,7 +117,7 @@ router.get('/portal', requireAuth, async (_req, res) => {
         stats.lastMessageDate = lastMsg[0]?.timestamp || null;
 
         // Noticias
-        const publishedNews = await db.select({ count: sql`COUNT(*)` }).from(news).where(eq(news.status, 'published'));
+        const publishedNews = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(news).where(eq(news.status, 'published'));
         const lastNews = await db.select({ fecha: news.fecha }).from(news).orderBy(desc(news.fecha)).limit(1);
         
         stats.publishedNews = publishedNews[0]?.count || 0;
@@ -127,18 +127,18 @@ router.get('/portal', requireAuth, async (_req, res) => {
         // Galería
         const galleryByCategory = await db.select({ 
             categoria: gallery.categoria, 
-            count: sql`COUNT(*)` 
+            count: sql`COUNT(*)`.mapWith(Number) 
         }).from(gallery).groupBy(gallery.categoria);
         
-        const activeImages = await db.select({ count: sql`COUNT(*)` }).from(gallery).where(eq(gallery.enabled, true));
+        const activeImages = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(gallery).where(eq(gallery.enabled, true));
         
         stats.galleryByCategory = galleryByCategory || [];
         stats.activeImages = activeImages[0]?.count || 0;
 
         // Chatbot
         const chatbotStats = await db.select({
-            totalConversations: sql`COUNT(DISTINCT ${chatConversations.sessionId})`,
-            todayConversations: sql`SUM(CASE WHEN DATE(${chatConversations.timestamp}) = DATE('now') THEN 1 ELSE 0 END)`
+            totalConversations: sql`COUNT(DISTINCT ${chatConversations.sessionId})`.mapWith(Number),
+            todayConversations: sql`SUM(CASE WHEN DATE(${chatConversations.timestamp}) = DATE('now') THEN 1 ELSE 0 END)`.mapWith(Number)
         }).from(chatConversations);
 
         stats.chatbot = {
@@ -149,9 +149,9 @@ router.get('/portal', requireAuth, async (_req, res) => {
         // Actividad reciente
         const recentAct = await db.execute(sql`
             SELECT 
-                (SELECT COUNT(*) FROM news WHERE fecha >= datetime('now', '-24 hours')) +
-                (SELECT COUNT(*) FROM events WHERE fecha >= datetime('now', '-24 hours')) +
-                (SELECT COUNT(*) FROM gallery WHERE created_at >= datetime('now', '-24 hours')) as total
+                CAST((SELECT COUNT(*) FROM news WHERE fecha >= datetime('now', '-24 hours')) AS INTEGER) +
+                CAST((SELECT COUNT(*) FROM events WHERE fecha >= datetime('now', '-24 hours')) AS INTEGER) +
+                CAST((SELECT COUNT(*) FROM gallery WHERE created_at >= datetime('now', '-24 hours')) AS INTEGER) as total
         `);
         stats.recentActivity = recentAct.rows[0]?.total || 0;
 

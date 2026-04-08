@@ -41,8 +41,8 @@ export const ContactModel = {
     },
 
     async countUnread() {
-        const result = await db.select({ count: sql`count(*)` }).from(contactMessages).where(eq(contactMessages.leido, 0));
-        return Number(result[0]?.count ?? 0);
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(contactMessages).where(eq(contactMessages.leido, 0));
+        return result[0]?.count || 0;
     },
 
     // Búsqueda con filtros
@@ -98,10 +98,10 @@ export const ContactModel = {
     },
 
     async getReplyCount(messageId) {
-        const result = await db.select({ count: sql`count(*)` })
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) })
             .from(contactReplies)
             .where(eq(contactReplies.messageId, messageId));
-        return Number(result[0]?.count ?? 0);
+        return result[0]?.count || 0;
     },
 
     // Exportar
@@ -116,7 +116,7 @@ export const ContactModel = {
             mensaje: contactMessages.mensaje,
             leido: contactMessages.leido,
             timestamp: contactMessages.timestamp,
-            reply_count: sql`(SELECT count(*) FROM contact_replies WHERE message_id = ${contactMessages.id})`
+            reply_count: sql`(SELECT count(*) FROM contact_replies WHERE message_id = ${contactMessages.id})`.mapWith(Number)
         })
         .from(contactMessages)
         .orderBy(desc(contactMessages.timestamp));
