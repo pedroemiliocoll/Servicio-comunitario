@@ -57,12 +57,31 @@ export const AiConfigModel = {
     async updateConfig(data) {
         const updates = {};
         
+        const camelToSnake = {
+            'systemPrompt': 'system_prompt',
+            'welcomeMessage': 'welcome_message',
+            'errorMessage': 'error_message',
+            'onlySchool': 'only_school',
+            'historyEnabled': 'history_enabled',
+            'feedbackEnabled': 'feedback_enabled',
+            'typingIndicator': 'typing_indicator',
+            'widgetColor': 'widget_color',
+            'widgetPosition': 'widget_position',
+            'maxTokens': 'max_tokens',
+            'autoOpen': 'auto_open',
+            'maxMessages': 'max_messages'
+        };
+
         for (const [key, defaultVal] of Object.entries(DEFAULT_CONFIG)) {
-            if (data[key] !== undefined) {
-                if (typeof defaultVal === 'number' && typeof data[key] !== 'number') {
-                    updates[key] = data[key] ? 1 : 0;
+            // Check both camelCase and snake_case versions of the key
+            const snakeKey = camelToSnake[key];
+            const val = data[key] !== undefined ? data[key] : (snakeKey ? data[snakeKey] : undefined);
+            
+            if (val !== undefined) {
+                if (typeof defaultVal === 'number' && typeof val !== 'number') {
+                    updates[key] = val ? 1 : 0;
                 } else {
-                    updates[key] = data[key];
+                    updates[key] = val;
                 }
             }
         }

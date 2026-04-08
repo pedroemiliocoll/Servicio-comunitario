@@ -59,11 +59,11 @@ export function useChatbot() {
     }, []);
 
     useEffect(() => {
-        if (open && !historyLoaded.current && config.historyEnabled) {
+        if (open && !historyLoaded.current && (config.history_enabled !== undefined ? config.history_enabled : config.historyEnabled)) {
             loadHistory();
         }
         if (open && messages.length === 0) {
-            setMessages([{ role: 'bot', text: config.welcomeMessage }]);
+            setMessages([{ role: 'bot', text: config.welcome_message || config.welcomeMessage }]);
         }
     }, [open]);
 
@@ -122,7 +122,7 @@ export function useChatbot() {
                 ? '⏳ Demasiadas solicitudes. Espera un momento e intenta de nuevo.'
                 : err.message.includes('API key')
                 ? '⚠️ La API key no está configurada. Ve a **Admin → Configuración** para agregarla.'
-                : config.errorMessage || '❌ Hubo un error. Intenta de nuevo.';
+                : config.error_message || config.errorMessage || '❌ Hubo un error. Intenta de nuevo.';
             setMessages(prev => [...prev, { role: 'bot', text: errMsg }]);
         }
         setLoading(false);
@@ -144,6 +144,7 @@ export function useChatbot() {
         messages, input, setInput, loading, streamingText,
         sendMessage, messagesEndRef, inputRef,
         suggestions: config.suggestions,
+        feedbackEnabled: config.feedback_enabled !== undefined ? config.feedback_enabled : config.feedbackEnabled,
         formatMessage,
         submitFeedback,
         lastBotMessageId,

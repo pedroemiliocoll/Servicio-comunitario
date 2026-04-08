@@ -89,11 +89,20 @@ app.use((req, res, next) => {
                     'avgDaily': 'avg_daily',
                     'uniqueUsers': 'unique_users',
                     'lastActive': 'last_active',
-                    'sessionId': 'session_id',
-                    'firstQuestion': 'first_question',
                     'replyCount': 'reply_count',
                     'createdAt': 'created_at',
-                    'updatedAt': 'updated_at'
+                    'updatedAt': 'updated_at',
+                    'systemPrompt': 'system_prompt',
+                    'welcomeMessage': 'welcome_message',
+                    'errorMessage': 'error_message',
+                    'onlySchool': 'only_school',
+                    'historyEnabled': 'history_enabled',
+                    'feedbackEnabled': 'feedback_enabled',
+                    'typingIndicator': 'typing_indicator',
+                    'widgetColor': 'widget_color',
+                    'widgetPosition': 'widget_position',
+                    'maxTokens': 'max_tokens',
+                    'autoOpen': 'auto_open'
                 };
                 
                 for (const k of Object.keys(obj)) {
