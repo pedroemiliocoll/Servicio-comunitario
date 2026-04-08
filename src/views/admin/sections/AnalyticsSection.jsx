@@ -310,21 +310,21 @@ export default function AnalyticsSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <MetricCard 
                     title="Total Consultas" 
-                    value={summary?.totalMessages || totalConsultas}
+                    value={summary?.total_messages || totalConsultas}
                     subtitle={`Últimos ${daily.length} días`}
                     icon="chat"
                     color="primary"
                 />
                 <MetricCard 
                     title="Promedio Diario" 
-                    value={summary?.avgDaily || avgDaily}
+                    value={summary?.avg_daily || avgDaily}
                     subtitle="Consultas por día"
                     icon="trending_up"
                     color="secondary"
                 />
                 <MetricCard 
                     title="Usuarios Únicos" 
-                    value={summary?.uniqueUsers || '-'}
+                    value={summary?.unique_users || '-'}
                     subtitle="Sesiones activas"
                     icon="group"
                     color="tertiary"

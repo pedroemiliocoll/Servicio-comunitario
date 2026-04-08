@@ -91,9 +91,13 @@ export function useDashboard() {
             galleryService.getAll().catch(() => []),
         ]).then(([news, summary, settings, contact, gallery]) => {
             setData({
-                newsCount: news.length, totalQuestions: summary.total, todayCount: summary.today,
-                hasApiKey: settings.hasApiKey, recentNews: news.slice(0, 5),
-                recentQuestions: summary.daily || [], unreadMessages: contact.unread || 0,
+                newsCount: news.length, 
+                totalQuestions: summary.total_messages || 0, 
+                todayCount: summary.today_count || 0,
+                hasApiKey: settings.hasApiKey, 
+                recentNews: news.slice(0, 5),
+                recentQuestions: summary.daily || [], 
+                unreadMessages: contact.unread || 0,
                 galleryCount: gallery.length || 0,
             });
         }).catch(console.error).finally(() => setLoading(false));

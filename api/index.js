@@ -91,7 +91,9 @@ app.use((req, res, next) => {
                     'lastActive': 'last_active',
                     'sessionId': 'session_id',
                     'firstQuestion': 'first_question',
-                    'replyCount': 'reply_count'
+                    'replyCount': 'reply_count',
+                    'createdAt': 'created_at',
+                    'updatedAt': 'updated_at'
                 };
                 
                 for (const k of Object.keys(obj)) {
