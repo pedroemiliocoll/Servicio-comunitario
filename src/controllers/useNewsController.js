@@ -128,9 +128,7 @@ export function useNewsAdmin(showToast) {
 
     const edit = (item) => {
         setForm({
-            ...item,
-            image_url: item.imageUrl || '',
-            scheduled_at: item.scheduledAt || ''
+            ...item
         });
         setEditing(item.id);
         setShowForm(true);

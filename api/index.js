@@ -59,6 +59,43 @@ startServices();
 app.use(cors({ origin: '*', credentials: true }));
 app.use(compression());
 
+app.use((req, res, next) => {
+    const originalJson = res.json;
+    res.json = function(data) {
+        function formatSQLiteDate(value) {
+            // Match YYYY-MM-DD HH:MM:SS (with optional .SSS and optional timezone)
+            if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})?$/.test(value)) {
+                let iso = value.replace(' ', 'T');
+                if (!iso.includes('Z') && !/[+-]\d{2}:?\d{2}$/.test(iso)) {
+                    iso += 'Z';
+                }
+                return iso;
+            }
+            return value;
+        }
+        function convertObj(obj) {
+            if (Array.isArray(obj)) return obj.map(convertObj);
+            if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
+                const n = {};
+                for (const k of Object.keys(obj)) {
+                    // Convertir camelCase (de Drizzle) a snake_case (para Frontend)
+                    // Solo si la clave tiene mayúsculas
+                    const snakeKey = k.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+                    n[snakeKey] = convertObj(obj[k]);
+                }
+                return n;
+            }
+            if (typeof obj === 'bigint') return Number(obj);
+            return formatSQLiteDate(obj);
+        }
+        
+        // Use JSON.stringify replacer for safe BigInt serialization before sending
+        const processed = convertObj(data);
+        return originalJson.call(this, processed);
+    };
+    next();
+});
+
 // Disable cache for API
 app.use('/api', (req, res, next) => {
     res.set({
@@ -88,6 +125,13 @@ app.use('/api/contact', rateLimiter);
 app.use('/api/auth', rateLimiter);
 
 // Route mapping
+app.use((req, res, next) => {
+    if (req.url.startsWith('/api/contact')) {
+        console.log(`[ContactRequest] ${req.method} ${req.url}`);
+    }
+    next();
+});
+
 app.use('/api/auth',          authRoutes);
 app.use('/api/news',          newsRoutes);
 app.use('/api/chatbot',       chatbotRoutes);

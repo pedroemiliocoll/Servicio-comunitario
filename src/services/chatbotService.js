@@ -80,5 +80,6 @@ export const chatbotService = {
     getDailyCounts(d)  { return apiRequest(`/chatbot/analytics/daily?days=${d || 7}`); },
     getCategoryStats() { return apiRequest('/chatbot/analytics/categories'); },
     getFrequent(n)     { return apiRequest(`/chatbot/analytics/frequent?limit=${n || 10}`); },
+    getHourlyStats()   { return apiRequest('/chatbot/analytics/hourly'); },
     getSummary()       { return apiRequest('/chatbot/analytics/summary'); },
 };

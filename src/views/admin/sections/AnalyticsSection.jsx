@@ -124,14 +124,14 @@ export default function AnalyticsSection() {
     useEffect(() => {
         const loadExtra = async () => {
             try {
-                const [sum, feedback, hourly] = await Promise.all([
+                const [sum, feedback, hourlyRes] = await Promise.all([
                     chatbotService.getSummary(),
                     chatbotService.getFeedbackStats(),
-                    fetch('/api/chatbot/analytics/hourly').then(r => r.json()).catch(() => ({}))
+                    chatbotService.getHourlyStats().catch(() => ({ hourly: {} }))
                 ]);
                 setSummary(sum);
                 setFeedbackStats(feedback);
-                setHourlyData(hourly);
+                setHourlyData(hourlyRes.hourly || {});
             } catch (e) { console.error(e); }
         };
         loadExtra();

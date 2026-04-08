@@ -47,6 +47,11 @@ router.post('/', contactController.submit);
  */
 router.get('/', requireAuth, contactController.getAll);
 
+router.get('/email-status', requireAuth, contactController.getEmailStatus);
+router.get('/summary', requireAuth, contactController.getSummary);
+router.get('/unread-count', requireAuth, contactController.getUnreadCount);
+router.get('/export/csv', requireAuth, contactController.exportCsv);
+
 /**
  * @swagger
  * /api/contact/{id}:
@@ -107,10 +112,6 @@ router.patch('/:id/read', requireAuth, contactController.markRead);
  */
 router.delete('/:id', requireAuth, contactController.delete);
 
-router.get('/email-status', requireAuth, contactController.getEmailStatus);
-router.get('/summary', requireAuth, contactController.getSummary);
-router.get('/unread-count', requireAuth, contactController.getUnreadCount);
-router.get('/export/csv', requireAuth, contactController.exportCsv);
 router.get('/:id/replies', requireAuth, contactController.getReplies);
 router.patch('/mark-all-read', requireAuth, contactController.markAllRead);
 router.post('/:id/reply', requireAuth, contactController.reply);

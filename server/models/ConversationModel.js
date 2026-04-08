@@ -54,9 +54,15 @@ export const ConversationModel = {
             SELECT c.session_id as sessionId,
                    MIN(c.timestamp) as startedAt,
                    CAST(COUNT(*) AS INTEGER) as messageCount,
-                   (SELECT content FROM chat_conversations
-                    WHERE session_id = c.session_id AND role = 'user'
-                    ORDER BY timestamp ASC LIMIT 1) as firstQuestion
+                   COALESCE(
+                       (SELECT content FROM chat_conversations
+                        WHERE session_id = c.session_id AND role = 'user'
+                        ORDER BY timestamp ASC LIMIT 1),
+                       (SELECT content FROM chat_conversations
+                        WHERE session_id = c.session_id
+                        ORDER BY timestamp ASC LIMIT 1),
+                       'Conversación sin mensajes'
+                   ) as firstQuestion
             FROM chat_conversations c
             GROUP BY c.session_id
             ORDER BY startedAt DESC
