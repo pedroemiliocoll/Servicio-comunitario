@@ -5,28 +5,16 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
+router.get('/unread-count', requireAuth, contactController.getUnreadCount);
+router.get('/summary', requireAuth, contactController.getSummary);
+router.get('/email-status', requireAuth, contactController.getEmailStatus);
+router.get('/export/csv', requireAuth, contactController.exportCsv);
+router.patch('/mark-all-read', requireAuth, contactController.markAllRead);
+
 /**
  * @swagger
- * /api/contact:
- *   post:
- *     summary: Enviar mensaje de contacto
- *     tags: [Contacto]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - nombre
- *               - email
- *             properties:
- *               nombre: { type: string }
- *               email: { type: string }
- *               asunto: { type: string }
- *               mensaje: { type: string }
- *     responses:
- *       200:
+...
+ *       201:
  *         description: Mensaje enviado
  *       400:
  *         description: Error en los datos
@@ -35,22 +23,11 @@ router.post('/', contactController.submit);
 
 /**
  * @swagger
- * /api/contact:
- *   get:
- *     summary: Obtener todos los mensajes de contacto
- *     tags: [Contacto]
- *     security:
- *       - bearerAuth: []
- *     responses:
+...
  *       200:
  *         description: Lista de mensajes
  */
 router.get('/', requireAuth, contactController.getAll);
-
-router.get('/email-status', requireAuth, contactController.getEmailStatus);
-router.get('/summary', requireAuth, contactController.getSummary);
-router.get('/unread-count', requireAuth, contactController.getUnreadCount);
-router.get('/export/csv', requireAuth, contactController.exportCsv);
 
 /**
  * @swagger

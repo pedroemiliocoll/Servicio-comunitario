@@ -78,9 +78,8 @@ app.use((req, res, next) => {
             if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
                 const n = {};
                 for (const k of Object.keys(obj)) {
-                    // Convertir camelCase (de Drizzle) a snake_case (para Frontend)
-                    // Solo si la clave tiene mayúsculas
-                    const snakeKey = k.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+                    // Solo convertir si es camelCase (letra pequeña seguida de letra grande)
+                    const snakeKey = k.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
                     n[snakeKey] = convertObj(obj[k]);
                 }
                 return n;
@@ -125,19 +124,12 @@ app.use('/api/contact', rateLimiter);
 app.use('/api/auth', rateLimiter);
 
 // Route mapping
-app.use((req, res, next) => {
-    if (req.url.startsWith('/api/contact')) {
-        console.log(`[ContactRequest] ${req.method} ${req.url}`);
-    }
-    next();
-});
-
+app.use('/api/contact',       contactRoutes);
 app.use('/api/auth',          authRoutes);
 app.use('/api/news',          newsRoutes);
 app.use('/api/chatbot',       chatbotRoutes);
 app.use('/api/settings',      settingsRoutes);
 app.use('/api/ai-config',     aiConfigRoutes);
-app.use('/api/contact',       contactRoutes);
 app.use('/api/gallery',        galleryRoutes);
 app.use('/api/users',          usersRoutes);
 app.use('/api/conversations',   conversationsRoutes);

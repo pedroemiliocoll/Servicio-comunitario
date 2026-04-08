@@ -110,7 +110,7 @@ export const AnalyticsModel = {
     },
 
     async getTodayCount() {
-        const result = await db.select({ count: sql`count(*)` })
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) })
             .from(chatbotAnalytics)
             .where(sql`date(${chatbotAnalytics.timestamp}) = date('now')`);
         return result[0]?.count || 0;
@@ -124,7 +124,7 @@ export const AnalyticsModel = {
             const day = d.toISOString().split('T')[0];
             const label = d.toLocaleDateString('es-VE', { weekday: 'short', day: 'numeric' });
             
-            const row = await db.select({ count: sql`count(*)` })
+            const row = await db.select({ count: sql`count(*)`.mapWith(Number) })
                 .from(chatbotAnalytics)
                 .where(sql`date(${chatbotAnalytics.timestamp}) = ${day}`);
             
@@ -136,7 +136,7 @@ export const AnalyticsModel = {
     async getCategoryCounts() {
         const rows = await db.select({ 
             category: chatbotAnalytics.category, 
-            count: sql`count(*)` 
+            count: sql`count(*)`.mapWith(Number) 
         })
         .from(chatbotAnalytics)
         .groupBy(chatbotAnalytics.category)
@@ -150,7 +150,7 @@ export const AnalyticsModel = {
     async getFrequentQuestions(limit = 10) {
         return await db.select({ 
             question: sql`LOWER(TRIM(${chatbotAnalytics.question}))`, 
-            count: sql`count(*)` 
+            count: sql`count(*)`.mapWith(Number) 
         })
         .from(chatbotAnalytics)
         .groupBy(sql`LOWER(TRIM(${chatbotAnalytics.question}))`)
@@ -159,7 +159,7 @@ export const AnalyticsModel = {
     },
 
     async getTotalCount() {
-        const result = await db.select({ count: sql`count(*)` }).from(chatbotAnalytics);
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(chatbotAnalytics);
         return result[0]?.count || 0;
     },
 
@@ -167,7 +167,7 @@ export const AnalyticsModel = {
         const rows = await db.select({ 
             day_of_week: sql`strftime('%w', ${chatbotAnalytics.timestamp})`,
             hour: sql`CAST(strftime('%H', ${chatbotAnalytics.timestamp}) as INTEGER)`,
-            count: sql`count(*)`
+            count: sql`count(*)`.mapWith(Number)
         })
         .from(chatbotAnalytics)
         .where(gte(chatbotAnalytics.timestamp, sql`date('now', '-30 days')`))
@@ -182,11 +182,11 @@ export const AnalyticsModel = {
     },
 
     async getSessionStats() {
-        const total = await db.select({ count: sql`count(*)` }).from(chatbotSessions);
-        const active24h = await db.select({ count: sql`count(*)` })
+        const total = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(chatbotSessions);
+        const active24h = await db.select({ count: sql`count(*)`.mapWith(Number) })
             .from(chatbotSessions)
             .where(gte(chatbotSessions.lastActive, sql`datetime('now', '-24 hours')`));
-        const avg = await db.select({ avg: sql`AVG(${chatbotSessions.messageCount})` }).from(chatbotSessions);
+        const avg = await db.select({ avg: sql`AVG(${chatbotSessions.messageCount})`.mapWith(Number) }).from(chatbotSessions);
         
         return {
             total: total[0]?.count || 0,
