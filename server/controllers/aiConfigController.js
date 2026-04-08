@@ -11,8 +11,15 @@ const VALID_POSITIONS = ['bottom-right', 'bottom-left', 'top-right', 'top-left']
 export const aiConfigController = {
     async getConfig(req, res) {
         const config = await AiConfigModel.getConfig();
+        const mappedData = {};
+        for (const [key, value] of Object.entries(config)) {
+            // Convertir camelCase a snake_case
+            const snakeKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+            mappedData[snakeKey] = value;
+        }
+
         res.json({
-            ...config,
+            ...mappedData,
             defaultTemplate: AiConfigModel.getDefaultPromptTemplate()
         });
     },

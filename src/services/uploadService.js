@@ -2,7 +2,7 @@
 const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 function getToken() {
-    return sessionStorage.getItem('liceo_admin_token');
+    return localStorage.getItem('liceo_admin_token');
 }
 
 /**

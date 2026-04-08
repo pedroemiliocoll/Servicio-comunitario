@@ -56,7 +56,7 @@ export const uploadToBlob = async (fileBuffer, filename) => {
 /**
  * Endpoint de subida
  */
-router.post('/', requireAuth, upload.single('image'), async (req, res) => {
+router.post('/', requireAuth, upload.single('file'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No se incluyó ninguna imagen.' });

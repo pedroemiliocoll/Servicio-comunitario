@@ -147,13 +147,13 @@ router.get('/portal', requireAuth, async (_req, res) => {
         };
 
         // Actividad reciente
-        const recentAct = await db.execute(sql`
+        const recentAct = await db.all(sql`
             SELECT 
                 CAST((SELECT COUNT(*) FROM news WHERE fecha >= datetime('now', '-24 hours')) AS INTEGER) +
                 CAST((SELECT COUNT(*) FROM events WHERE fecha >= datetime('now', '-24 hours')) AS INTEGER) +
                 CAST((SELECT COUNT(*) FROM gallery WHERE created_at >= datetime('now', '-24 hours')) AS INTEGER) as total
         `);
-        stats.recentActivity = recentAct.rows[0]?.total || 0;
+        stats.recentActivity = recentAct[0]?.total || 0;
 
         res.json(stats);
     } catch (error) {

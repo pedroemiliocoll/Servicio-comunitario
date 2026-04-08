@@ -5,7 +5,7 @@ export const backupService = {
     async export() {
         const response = await fetch('/api/backup/export', {
             headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('liceo_admin_token')}`
+                'Authorization': `Bearer ${localStorage.getItem('liceo_admin_token')}`
             }
         });
         
