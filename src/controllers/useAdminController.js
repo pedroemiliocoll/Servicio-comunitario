@@ -92,12 +92,12 @@ export function useDashboard() {
         ]).then(([news, summary, settings, contact, gallery]) => {
             setData({
                 newsCount: news ? news.length : 0, 
-                totalQuestions: summary.total_messages || summary.totalMessages || 0, 
-                todayCount: summary.today_count || summary.todayCount || 0,
+                totalQuestions: summary.total_messages || 0, 
+                todayCount: summary.today_count || 0,
                 hasApiKey: settings.hasApiKey, 
                 recentNews: Array.isArray(news) ? news.slice(0, 5) : [],
                 recentQuestions: summary.daily || [], 
-                unreadMessages: contact.unread !== undefined ? contact.unread : (contact.unread_messages || 0),
+                unreadMessages: contact.unread !== undefined ? contact.unread : 0,
                 galleryCount: gallery ? gallery.length : 0,
             });
         }).catch(console.error).finally(() => setLoading(false));

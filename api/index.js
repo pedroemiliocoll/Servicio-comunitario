@@ -12,6 +12,7 @@ import logger, { logRequest } from '../server/services/logger.js';
 import { createRateLimitMiddleware } from '../server/middleware/rateLimit.js';
 import { swaggerSpec } from '../server/config/swagger.js';
 import { NewsModel } from '../server/models/NewsModel.js';
+import { toSnakeCase } from '../server/utils/caseConverter.js';
 import { UserModel } from '../server/models/UserModel.js';
 import { contactMessages } from '../server/db/schema.js';
 import { sql } from 'drizzle-orm';
@@ -62,64 +63,7 @@ app.use(compression());
 app.use((req, res, next) => {
     const originalJson = res.json;
     res.json = function(data) {
-        function formatSQLiteDate(value) {
-            // Match YYYY-MM-DD HH:MM:SS (with optional .SSS and optional timezone)
-            if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})?$/.test(value)) {
-                let iso = value.replace(' ', 'T');
-                if (!iso.includes('Z') && !/[+-]\d{2}:?\d{2}$/.test(iso)) {
-                    iso += 'Z';
-                }
-                return iso;
-            }
-            return value;
-        }
-        function convertObj(obj) {
-            if (Array.isArray(obj)) return obj.map(convertObj);
-            if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
-                const n = {};
-                // Mapeo específico de campos que el frontend espera en snake_case
-                // para no romper objetos que deben mantener camelCase (como config del chatbot)
-                const snakeMappings = {
-                    'imageUrl': 'image_url',
-                    'scheduledAt': 'scheduled_at',
-                    'startedAt': 'started_at',
-                    'messageCount': 'message_count',
-                    'totalMessages': 'total_messages',
-                    'todayCount': 'today_count',
-                    'avgDaily': 'avg_daily',
-                    'uniqueUsers': 'unique_users',
-                    'lastActive': 'last_active',
-                    'sessionId': 'session_id',
-                    'firstQuestion': 'first_question',
-                    'replyCount': 'reply_count',
-                    'createdAt': 'created_at',
-                    'updatedAt': 'updated_at',
-                    'systemPrompt': 'system_prompt',
-                    'welcomeMessage': 'welcome_message',
-                    'errorMessage': 'error_message',
-                    'onlySchool': 'only_school',
-                    'historyEnabled': 'history_enabled',
-                    'feedbackEnabled': 'feedback_enabled',
-                    'typingIndicator': 'typing_indicator',
-                    'widgetColor': 'widget_color',
-                    'widgetPosition': 'widget_position',
-                    'maxTokens': 'max_tokens',
-                    'autoOpen': 'auto_open'
-                };
-                
-                for (const k of Object.keys(obj)) {
-                    const targetKey = snakeMappings[k] || k;
-                    n[targetKey] = convertObj(obj[k]);
-                }
-                return n;
-            }
-            if (typeof obj === 'bigint') return Number(obj);
-            return formatSQLiteDate(obj);
-        }
-        
-        // Use JSON.stringify replacer for safe BigInt serialization before sending
-        const processed = convertObj(data);
-        return originalJson.call(this, processed);
+        return originalJson.call(this, toSnakeCase(data));
     };
     next();
 });
