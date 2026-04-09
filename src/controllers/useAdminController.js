@@ -84,21 +84,22 @@ export function useDashboard() {
 
     useEffect(() => {
         Promise.all([
-            newsService.getAll('all'),
+            newsService.getAll(null, true),
             chatbotService.getSummary(),
             settingsService.getAdmin(),
             contactService.getSummary().catch(() => ({ unread: 0 })),
             galleryService.getAll().catch(() => []),
         ]).then(([news, summary, settings, contact, gallery]) => {
+            const newsList = Array.isArray(news) ? news : (news?.data || []);
             setData({
-                newsCount: news ? news.length : 0, 
-                totalQuestions: summary.total_messages || 0, 
-                todayCount: summary.today_count || 0,
-                hasApiKey: settings.hasApiKey, 
-                recentNews: Array.isArray(news) ? news.slice(0, 5) : [],
+                newsCount: newsList.length, 
+                totalQuestions: summary.total_messages || summary.totalMessages || 0, 
+                todayCount: summary.today_count || summary.todayCount || 0,
+                hasApiKey: settings.has_api_key || settings.hasApiKey || false, 
+                recentNews: newsList.slice(0, 5),
                 recentQuestions: summary.daily || [], 
-                unreadMessages: contact.unread !== undefined ? contact.unread : 0,
-                galleryCount: gallery ? gallery.length : 0,
+                unreadMessages: contact.unread ?? contact.unread_count ?? contact.unreadCount ?? 0,
+                galleryCount: Array.isArray(gallery) ? gallery.length : 0,
             });
         }).catch(console.error).finally(() => setLoading(false));
     }, []);
@@ -145,7 +146,10 @@ export function useSettings(showToast) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        settingsService.getAdmin().then(d => { setInfo(d); setApiKey(d.apiKey || ''); })
+        settingsService.getAdmin().then(d => { 
+            setInfo(d); 
+            setApiKey(d.api_key || d.apiKey || ''); 
+        })
             .catch(console.error).finally(() => setLoading(false));
     }, []);
 
