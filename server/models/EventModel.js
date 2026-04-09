@@ -18,13 +18,9 @@ export const EventModel = {
     },
 
     async getUpcoming(limit = 50) {
-        // En SQLite date('now', '-7 days') funciona bien.
         return await db.select()
             .from(events)
-            .where(and(
-                eq(events.enabled, 1),
-                gte(events.fecha, sql`date('now', '-7 days')`)
-            ))
+            .where(eq(events.enabled, 1))
             .orderBy(asc(events.fecha), asc(events.hora))
             .limit(limit);
     },
