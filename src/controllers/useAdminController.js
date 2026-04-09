@@ -84,20 +84,20 @@ export function useDashboard() {
 
     useEffect(() => {
         Promise.all([
-            newsService.getAll(null, true).catch(() => []),
             chatbotService.getSummary().catch(() => ({})),
             settingsService.getAdmin().catch(() => ({})),
             contactService.getSummary().catch(() => ({ unread: 0 })),
             galleryService.getAll().catch(() => []),
-        ]).then(([news, summary, settings, contact, gallery]) => {
-            const newsList = Array.isArray(news) ? news : (news?.data || []);
+        ]).then(([summary, settings, contact, gallery]) => {
+            // recent_news comes from the centralized summary (middleware converts recentNews → recent_news)
+            const recentNews = summary.recent_news || [];
             setData({
-                // Prefer centralized newsCount from summary, fallback to local length
-                newsCount: summary.news_count ?? summary.newsCount ?? newsList.length, 
+                // Prefer centralized newsCount from summary, fallback to 0
+                newsCount: summary.news_count ?? summary.newsCount ?? 0, 
                 totalQuestions: summary.total_messages || summary.totalMessages || 0, 
                 todayCount: summary.today_count || summary.todayCount || 0,
                 hasApiKey: settings.has_api_key || settings.hasApiKey || false, 
-                recentNews: newsList.slice(0, 5),
+                recentNews,
                 recentQuestions: summary.daily || [], 
                 unreadMessages: summary.unread_messages ?? summary.unreadMessages ?? contact.unread ?? contact.unread_count ?? 0,
                 galleryCount: Array.isArray(gallery) ? gallery.length : 0,

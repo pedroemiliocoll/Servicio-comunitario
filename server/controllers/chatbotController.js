@@ -4,6 +4,9 @@ import { ConversationModel } from '../models/ConversationModel.js';
 import { AiConfigModel } from '../models/AiConfigModel.js';
 import { NewsModel } from '../models/NewsModel.js';
 import { ContactModel } from '../models/ContactModel.js';
+import { db } from '../config/database.js';
+import { news } from '../db/schema.js';
+import { asc, desc } from 'drizzle-orm';
 import { streamChatMessage } from '../services/geminiService.js';
 
 export const chatbotController = {
@@ -83,6 +86,8 @@ export const chatbotController = {
         const totalF = f.positive + f.negative;
         const satisfaction = totalF > 0 ? Math.round((f.positive / totalF) * 100) : 0;
 
+        const recentNews = await db.select().from(news).orderBy(asc(news.orden), desc(news.fecha)).limit(5);
+
         res.json({
             totalMessages: await AnalyticsModel.getTotalCount(),
             todayCount: await AnalyticsModel.getTodayCount(),
@@ -92,6 +97,7 @@ export const chatbotController = {
             avgDaily: sessionStats.avgMessages,
             newsCount: await NewsModel.count(),
             unreadMessages: await ContactModel.countUnread(),
+            recentNews,
             satisfaction
         });
     },
