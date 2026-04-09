@@ -101,39 +101,45 @@ router.get('/portal', requireAuth, async (_req, res) => {
             return res[0]?.count || 0;
         };
 
-        const stats = {
-            news: await getCount(news),
-            gallery: await getCount(gallery),
-            events: await getCount(events),
-            users: await getCount(users)
-        };
+        // Run all main counts in parallel
+        const [newsCount, galleryCount, eventsCount, usersCount] = await Promise.all([
+            getCount(news),
+            getCount(gallery),
+            getCount(events),
+            getCount(users),
+        ]);
 
         // Mensajes de contacto
-        const unreadMessages = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(contactMessages).where(eq(contactMessages.leido, false));
-        const lastMsg = await db.select({ timestamp: contactMessages.timestamp }).from(contactMessages).orderBy(desc(contactMessages.timestamp)).limit(1);
-        
-        stats.contactMessages = await getCount(contactMessages);
-        stats.unreadMessages = unreadMessages[0]?.count || 0;
-        stats.lastMessageDate = lastMsg[0]?.timestamp || null;
+        const [unreadResult, lastMsgResult, contactCount] = await Promise.all([
+            db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(contactMessages).where(eq(contactMessages.leido, 0)),
+            db.select({ timestamp: contactMessages.timestamp }).from(contactMessages).orderBy(desc(contactMessages.timestamp)).limit(1),
+            getCount(contactMessages),
+        ]);
 
         // Noticias
-        const publishedNews = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(news).where(eq(news.status, 'published'));
-        const lastNews = await db.select({ fecha: news.fecha }).from(news).orderBy(desc(news.fecha)).limit(1);
-        
-        stats.publishedNews = publishedNews[0]?.count || 0;
-        stats.draftNews = stats.news - stats.publishedNews;
-        stats.lastNewsDate = lastNews[0]?.fecha || null;
+        const [publishedResult, lastNewsResult] = await Promise.all([
+            db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(news).where(eq(news.status, 'published')),
+            db.select({ fecha: news.fecha }).from(news).orderBy(desc(news.fecha)).limit(1),
+        ]);
+        const publishedNews = publishedResult[0]?.count || 0;
+
+        // Eventos: próximos y pasados
+        const [upcomingResult, pastResult] = await Promise.all([
+            db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(events).where(sql`${events.fecha} >= DATE('now')`),
+            db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(events).where(sql`${events.fecha} < DATE('now')`),
+        ]);
 
         // Galería
-        const galleryByCategory = await db.select({ 
-            categoria: gallery.categoria, 
-            count: sql`COUNT(*)`.mapWith(Number) 
-        }).from(gallery).groupBy(gallery.categoria);
-        
-        const activeImages = await db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(gallery).where(eq(gallery.enabled, true));
-        
-        stats.galleryByCategory = galleryByCategory || [];
-        stats.activeImages = activeImages[0]?.count || 0;
+        const [galleryByCategoryResult, activeImagesResult] = await Promise.all([
+            db.select({ categoria: gallery.categoria, count: sql`COUNT(*)`.mapWith(Number) }).from(gallery).groupBy(gallery.categoria),
+            db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(gallery).where(eq(gallery.enabled, 1)),
+        ]);
+
+        // Usuarios por rol y nuevos este mes
+        const [usersByRoleResult, newUsersResult] = await Promise.all([
+            db.select({ role: users.role, count: sql`COUNT(*)`.mapWith(Number) }).from(users).groupBy(users.role),
+            db.select({ count: sql`COUNT(*)`.mapWith(Number) }).from(users).where(sql`${users.createdAt} >= datetime('now', '-30 days')`),
+        ]);
 
         // Chatbot
         const chatbotStats = await db.select({
@@ -141,21 +147,37 @@ router.get('/portal', requireAuth, async (_req, res) => {
             todayConversations: sql`SUM(CASE WHEN DATE(${chatConversations.timestamp}) = DATE('now') THEN 1 ELSE 0 END)`.mapWith(Number)
         }).from(chatConversations);
 
-        stats.chatbot = {
-            totalConversations: chatbotStats[0]?.totalConversations || 0,
-            todayConversations: chatbotStats[0]?.todayConversations || 0
-        };
-
-        // Actividad reciente
+        // Actividad reciente (últimas 24 horas)
         const recentAct = await db.all(sql`
             SELECT 
                 CAST((SELECT COUNT(*) FROM news WHERE fecha >= datetime('now', '-24 hours')) AS INTEGER) +
                 CAST((SELECT COUNT(*) FROM events WHERE fecha >= datetime('now', '-24 hours')) AS INTEGER) +
                 CAST((SELECT COUNT(*) FROM gallery WHERE created_at >= datetime('now', '-24 hours')) AS INTEGER) as total
         `);
-        stats.recentActivity = recentAct[0]?.total || 0;
 
-        res.json(stats);
+        res.json({
+            news: newsCount,
+            gallery: galleryCount,
+            events: eventsCount,
+            users: usersCount,
+            contactMessages: contactCount,
+            unreadMessages: unreadResult[0]?.count || 0,
+            lastMessageDate: lastMsgResult[0]?.timestamp || null,
+            publishedNews,
+            draftNews: newsCount - publishedNews,
+            lastNewsDate: lastNewsResult[0]?.fecha || null,
+            upcomingEvents: upcomingResult[0]?.count || 0,
+            pastEvents: pastResult[0]?.count || 0,
+            galleryByCategory: galleryByCategoryResult || [],
+            activeImages: activeImagesResult[0]?.count || 0,
+            usersByRole: usersByRoleResult || [],
+            newUsersThisMonth: newUsersResult[0]?.count || 0,
+            chatbot: {
+                totalConversations: chatbotStats[0]?.totalConversations || 0,
+                todayConversations: chatbotStats[0]?.todayConversations || 0
+            },
+            recentActivity: recentAct[0]?.total || 0,
+        });
     } catch (error) {
         console.error('Error getting portal stats:', error);
         res.status(500).json({ error: 'Error al obtener estadísticas' });

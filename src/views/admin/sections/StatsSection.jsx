@@ -154,34 +154,34 @@ export default function StatsSection() {
 
     const data = stats || {
         news: 0, gallery: 0, events: 0, users: 0,
-        contactMessages: 0, unreadMessages: 0, publishedNews: 0, draftNews: 0,
-        upcomingEvents: 0, pastEvents: 0, activeImages: 0,
-        lastMessageDate: null, lastNewsDate: null,
-        newUsersThisMonth: 0, recentActivity: 0,
-        chatbot: { totalConversations: 0, todayConversations: 0 },
-        galleryByCategory: [], usersByRole: []
+        contact_messages: 0, unread_messages: 0, published_news: 0, draft_news: 0,
+        upcoming_events: 0, past_events: 0, active_images: 0,
+        last_message_date: null, last_news_date: null,
+        new_users_this_month: 0, recent_activity: 0,
+        chatbot: { total_conversations: 0, today_conversations: 0 },
+        gallery_by_category: [], users_by_role: []
     };
 
-    const categoryData = data.galleryByCategory?.map((c, i) => ({
+    const categoryData = data.gallery_by_category?.map((c, i) => ({
         label: c.categoria || 'Sin categoria',
         value: c.count,
         color: ['bg-primary/20', 'bg-secondary/20', 'bg-tertiary/20', 'bg-green-500/20', 'bg-amber-500/20'][i % 5]
     })) || [];
 
-    const usersData = data.usersByRole?.map((u, i) => ({
+    const usersData = data.users_by_role?.map((u, i) => ({
         label: u.role === 'admin' ? 'Administradores' : u.role === 'editor' ? 'Editores' : 'Usuarios',
         value: u.count,
         color: ['bg-red-500/20', 'bg-blue-500/20', 'bg-green-500/20'][i % 3]
     })) || [];
 
     const newsData = [
-        { label: 'Publicadas', value: data.publishedNews, color: 'bg-green-500' },
-        { label: 'Borradores', value: data.draftNews, color: 'bg-amber-500' }
+        { label: 'Publicadas', value: data.published_news || 0, color: 'bg-green-500' },
+        { label: 'Borradores', value: data.draft_news || 0, color: 'bg-amber-500' }
     ];
 
     const eventData = [
-        { label: 'Proximos', value: data.upcomingEvents, color: 'bg-primary' },
-        { label: 'Pasados', value: data.pastEvents, color: 'bg-gray-400' }
+        { label: 'Proximos', value: data.upcoming_events || 0, color: 'bg-primary' },
+        { label: 'Pasados', value: data.past_events || 0, color: 'bg-gray-400' }
     ];
 
     return (
@@ -217,11 +217,11 @@ export default function StatsSection() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                <StatCard icon="newspaper" label="Noticias" value={data.news} sub={`${data.publishedNews} pub / ${data.draftNews} bor`} color="bg-primary/10" iconColor="text-primary" />
-                <StatCard icon="photo_library" label="Galeria" value={data.gallery} sub={`${data.activeImages} activas`} color="bg-secondary-container" iconColor="text-secondary" />
-                <StatCard icon="mail" label="Mensajes" value={data.contactMessages} sub={`${data.unreadMessages} sin leer`} color="bg-red-500/10" iconColor="text-red-500" />
-                <StatCard icon="event" label="Eventos" value={data.events} sub={`${data.upcomingEvents} proximos`} color="bg-green-500/10" iconColor="text-green-500" />
-                <StatCard icon="group" label="Usuarios" value={data.users} sub={`${data.newUsersThisMonth} este mes`} color="bg-cyan-500/10" iconColor="text-cyan-500" />
+                <StatCard icon="newspaper" label="Noticias" value={data.news} sub={`${data.published_news ?? '?'} pub / ${data.draft_news ?? '?'} bor`} color="bg-primary/10" iconColor="text-primary" />
+                <StatCard icon="photo_library" label="Galeria" value={data.gallery} sub={`${data.active_images ?? '?'} activas`} color="bg-secondary-container" iconColor="text-secondary" />
+                <StatCard icon="mail" label="Mensajes" value={data.contact_messages ?? 0} sub={`${data.unread_messages ?? '?'} sin leer`} color="bg-red-500/10" iconColor="text-red-500" />
+                <StatCard icon="event" label="Eventos" value={data.events} sub={`${data.upcoming_events ?? '?'} proximos`} color="bg-green-500/10" iconColor="text-green-500" />
+                <StatCard icon="group" label="Usuarios" value={data.users} sub={`${data.new_users_this_month ?? '?'} este mes`} color="bg-cyan-500/10" iconColor="text-cyan-500" />
             </div>
 
             {/* Stats Cards - Segunda fila */}
@@ -236,11 +236,11 @@ export default function StatsSection() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="text-center p-4 bg-surface-container rounded-xl">
-                            <p className="text-3xl font-black text-primary">{data.chatbot?.totalConversations || 0}</p>
+                            <p className="text-3xl font-black text-primary">{data.chatbot?.total_conversations || 0}</p>
                             <p className="text-xs text-on-surface-variant">Total conversaciones</p>
                         </div>
                         <div className="text-center p-4 bg-surface-container rounded-xl">
-                            <p className="text-3xl font-black text-green-500">{data.chatbot?.todayConversations || 0}</p>
+                            <p className="text-3xl font-black text-green-500">{data.chatbot?.today_conversations || 0}</p>
                             <p className="text-xs text-on-surface-variant">Hoy</p>
                         </div>
                     </div>
@@ -255,8 +255,8 @@ export default function StatsSection() {
                         <h4 className="font-black text-on-surface">Actividad Reciente</h4>
                     </div>
                     <div className="space-y-3">
-                        <MiniStat icon="schedule" label="Ultimas 24 horas" value={data.recentActivity} iconColor="text-amber-500" />
-                        <MiniStat icon="calendar_month" label="Este mes" value={data.newUsersThisMonth} iconColor="text-primary" sub="usuarios nuevos" />
+                        <MiniStat icon="schedule" label="Ultimas 24 horas" value={data.recent_activity ?? 0} iconColor="text-amber-500" />
+                        <MiniStat icon="calendar_month" label="Este mes" value={data.new_users_this_month ?? 0} iconColor="text-primary" sub="usuarios nuevos" />
                     </div>
                 </div>
 
@@ -273,14 +273,14 @@ export default function StatsSection() {
                             <span className="material-symbols-outlined text-primary text-xl">newspaper</span>
                             <div>
                                 <p className="text-xs text-on-surface-variant">Ultima noticia</p>
-                                <p className="text-sm font-bold text-on-surface">{data.lastNewsDate ? new Date(data.lastNewsDate).toLocaleDateString('es-VE') : 'Sin noticias'}</p>
+                                <p className="text-sm font-bold text-on-surface">{data.last_news_date ? new Date(data.last_news_date).toLocaleDateString('es-VE') : 'Sin noticias'}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
                             <span className="material-symbols-outlined text-red-500 text-xl">mail</span>
                             <div>
                                 <p className="text-xs text-on-surface-variant">Ultimo mensaje</p>
-                                <p className="text-sm font-bold text-on-surface">{data.lastMessageDate ? new Date(data.lastMessageDate).toLocaleDateString('es-VE') : 'Sin mensajes'}</p>
+                                <p className="text-sm font-bold text-on-surface">{data.last_message_date ? new Date(data.last_message_date).toLocaleDateString('es-VE') : 'Sin mensajes'}</p>
                             </div>
                         </div>
                     </div>
@@ -333,7 +333,7 @@ export default function StatsSection() {
                         </div>
                     </div>
                     <div className="text-center bg-white/10 px-8 py-4 rounded-2xl">
-                        <p className="text-4xl font-black">{data.unreadMessages}</p>
+                        <p className="text-4xl font-black">{data.unread_messages ?? 0}</p>
                         <p className="text-xs text-white/70 uppercase tracking-widest mt-1">mensajes sin leer</p>
                     </div>
                 </div>
