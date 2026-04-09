@@ -99,7 +99,7 @@ export function useDashboard() {
                 hasApiKey: settings.has_api_key || settings.hasApiKey || false, 
                 recentNews: newsList.slice(0, 5),
                 recentQuestions: summary.daily || [], 
-                unreadMessages: contact.unread ?? contact.unread_count ?? contact.unreadCount ?? 0,
+                unreadMessages: summary.unread_messages ?? summary.unreadMessages ?? contact.unread ?? contact.unread_count ?? 0,
                 galleryCount: Array.isArray(gallery) ? gallery.length : 0,
             });
         }).catch(err => {

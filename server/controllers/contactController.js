@@ -49,9 +49,11 @@ export const contactController = {
     },
 
     async getSummary(req, res) {
-        const unread = await ContactModel.countUnread();
-        const all = await ContactModel.getAll();
-        res.json({ unread, total: all.length });
+        const [unread, total] = await Promise.all([
+            ContactModel.countUnread(),
+            ContactModel.countAll()
+        ]);
+        res.json({ unread, total });
     },
 
     // GET /api/contact/unread-count — lightweight polling endpoint

@@ -45,6 +45,11 @@ export const ContactModel = {
         return result[0]?.count || 0;
     },
 
+    async countAll() {
+        const result = await db.select({ count: sql`count(*)`.mapWith(Number) }).from(contactMessages);
+        return result[0]?.count || 0;
+    },
+
     // Búsqueda con filtros
     async search(filters = {}) {
         let conditions = [];
