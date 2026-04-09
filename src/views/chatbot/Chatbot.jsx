@@ -113,12 +113,13 @@ export default function Chatbot() {
     return (
         <>
             <div className={`${getButtonPosition(position)} group`}>
-                <div className={`absolute ${position.includes('left') ? 'bottom-full left-0 mb-4' : 'bottom-full right-0 mb-4'} w-64`}>
+                {/* Hover prompt hidden as requested */}
+                {/* <div className={`absolute ${position.includes('left') ? 'bottom-full left-0 mb-4' : 'bottom-full right-0 mb-4'} w-64`}>
                     <div className={`bg-surface-container-lowest px-4 py-3 rounded-2xl shadow-xl border border-outline-variant transform transition-all ${open ? 'opacity-0 translate-y-2 pointer-events-none' : 'translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 pointer-events-none'}`}>
                         <p className="text-sm font-medium text-on-surface">¿Tienes dudas sobre el liceo?</p>
                         <p className="text-xs text-on-surface-variant mt-1">Coll-Bot está en línea.</p>
                     </div>
-                </div>
+                </div> */}
                 <button 
                     onClick={toggle} 
                     className="w-16 h-16 rounded-2xl text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all cursor-pointer"

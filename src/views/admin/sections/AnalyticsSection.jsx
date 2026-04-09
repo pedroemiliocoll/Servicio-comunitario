@@ -263,13 +263,14 @@ export default function AnalyticsSection() {
                         <span className="material-symbols-outlined text-lg">filter_list</span>
                         Filtros
                     </button>
-                    <button 
+                    {/* Hide Export button as requested */}
+                    {/* <button 
                         onClick={handleExport}
                         className="flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
                     >
                         <span className="material-symbols-outlined text-lg">download</span>
                         Exportar
-                    </button>
+                    </button> */}
                 </div>
             </div>
 

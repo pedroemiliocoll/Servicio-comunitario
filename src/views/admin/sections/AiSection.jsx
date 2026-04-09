@@ -448,7 +448,11 @@ export default function AiSection({ showToast }) {
                                 <p className="text-xs text-on-surface-variant mb-4">Separadas por coma. Aparecen al abrir el chat.</p>
                                 <textarea
                                     className="w-full bg-surface-container-low border-none rounded-2xl px-4 py-3 text-sm font-medium h-24 resize-none focus:ring-2 focus:ring-primary"
-                                    value={(config.suggestions || '[]').replace(/[\[\]"]/g, '')}
+                                    value={
+                                        Array.isArray(config.suggestions) 
+                                            ? config.suggestions.join(', ') 
+                                            : (config.suggestions || '[]').replace(/[\[\]"]/g, '')
+                                    }
                                     onChange={e => {
                                         const suggestions = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
                                         updateConfig('suggestions', JSON.stringify(suggestions));
@@ -457,11 +461,13 @@ export default function AiSection({ showToast }) {
                                 />
                                 <div className="mt-4 flex flex-wrap gap-2">
                                     {(() => {
-                                        try {
-                                            return JSON.parse(config.suggestions || '[]').map((s, i) => (
-                                                <span key={i} className="text-xs bg-surface-container-low px-4 py-2 rounded-full">{s}</span>
-                                            ));
-                                        } catch { return null; }
+                                        const sList = Array.isArray(config.suggestions) 
+                                            ? config.suggestions 
+                                            : (() => { try { return JSON.parse(config.suggestions || '[]'); } catch { return []; } })();
+                                        
+                                        return sList.map((s, i) => (
+                                            <span key={i} className="text-xs bg-surface-container-low px-4 py-2 rounded-full">{s}</span>
+                                        ));
                                     })()}
                                 </div>
                             </div>

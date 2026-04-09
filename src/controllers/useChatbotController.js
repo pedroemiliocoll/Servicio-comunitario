@@ -46,7 +46,20 @@ export function useChatbot() {
         const loadConfig = async () => {
             try {
                 const cfg = await chatbotService.getChatbotConfig();
-                setConfig(cfg);
+                // Normalizar a camelCase para el resto del sistema
+                const normalized = {
+                    ...DEFAULT_CONFIG,
+                    welcomeMessage: cfg.welcome_message || cfg.welcomeMessage || DEFAULT_CONFIG.welcomeMessage,
+                    errorMessage: cfg.error_message || cfg.errorMessage || DEFAULT_CONFIG.errorMessage,
+                    placeholder: cfg.placeholder || DEFAULT_CONFIG.placeholder,
+                    suggestions: cfg.suggestions || DEFAULT_CONFIG.suggestions,
+                    feedbackEnabled: cfg.feedback_enabled !== undefined ? Boolean(cfg.feedback_enabled) : (cfg.feedbackEnabled !== undefined ? Boolean(cfg.feedbackEnabled) : DEFAULT_CONFIG.feedbackEnabled),
+                    historyEnabled: cfg.history_enabled !== undefined ? Boolean(cfg.history_enabled) : (cfg.historyEnabled !== undefined ? Boolean(cfg.historyEnabled) : DEFAULT_CONFIG.historyEnabled),
+                    typingIndicator: cfg.typing_indicator !== undefined ? Boolean(cfg.typing_indicator) : (cfg.typingIndicator !== undefined ? Boolean(cfg.typingIndicator) : DEFAULT_CONFIG.typingIndicator),
+                    widgetColor: cfg.widget_color || cfg.widgetColor || DEFAULT_CONFIG.widgetColor,
+                    widgetPosition: cfg.widget_position || cfg.widgetPosition || DEFAULT_CONFIG.widgetPosition,
+                };
+                setConfig(normalized);
                 configLoaded.current = true;
             } catch (err) {
                 console.error('Error cargando config:', err);
@@ -59,7 +72,7 @@ export function useChatbot() {
     }, []);
 
     useEffect(() => {
-        if (open && !historyLoaded.current && (config.history_enabled !== undefined ? config.history_enabled : config.historyEnabled)) {
+        if (open && !historyLoaded.current && config.historyEnabled) {
             loadHistory();
         }
         if (open && messages.length === 0) {
@@ -144,7 +157,7 @@ export function useChatbot() {
         messages, input, setInput, loading, streamingText,
         sendMessage, messagesEndRef, inputRef,
         suggestions: config.suggestions,
-        feedbackEnabled: config.feedback_enabled !== undefined ? config.feedback_enabled : config.feedbackEnabled,
+        feedbackEnabled: config.feedbackEnabled,
         formatMessage,
         submitFeedback,
         lastBotMessageId,

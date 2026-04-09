@@ -324,14 +324,15 @@ export default function ContactSection({ showToast }) {
                                         <span className="material-symbols-outlined text-lg">send</span>
                                         {sendingReply ? 'Enviando...' : 'Enviar por Email'}
                                     </button>
-                                    <button 
+                                    {/* Hide draft save button as requested */}
+                                    {/* <button 
                                         onClick={() => handleReply(false)}
                                         disabled={!replyText.trim() || sendingReply}
                                         className="bg-surface-container-high text-on-surface-variant px-6 py-3 rounded-xl font-headline font-black text-sm hover:bg-surface-container-highest transition-colors disabled:opacity-50 flex items-center gap-2"
                                     >
                                         <span className="material-symbols-outlined text-lg">save</span>
                                         Solo Guardar
-                                    </button>
+                                    </button> */}
                                     <a 
                                         href={`mailto:${selected.email}`} 
                                         className="bg-surface-container-high text-on-surface px-6 py-3 rounded-xl font-headline font-black text-sm hover:bg-surface-container-highest transition-colors flex items-center gap-2"

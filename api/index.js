@@ -89,6 +89,8 @@ app.use((req, res, next) => {
                     'avgDaily': 'avg_daily',
                     'uniqueUsers': 'unique_users',
                     'lastActive': 'last_active',
+                    'sessionId': 'session_id',
+                    'firstQuestion': 'first_question',
                     'replyCount': 'reply_count',
                     'createdAt': 'created_at',
                     'updatedAt': 'updated_at',
