@@ -2,6 +2,7 @@
 import { AnalyticsModel } from '../models/AnalyticsModel.js';
 import { ConversationModel } from '../models/ConversationModel.js';
 import { AiConfigModel } from '../models/AiConfigModel.js';
+import { NewsModel } from '../models/NewsModel.js';
 import { streamChatMessage } from '../services/geminiService.js';
 
 export const chatbotController = {
@@ -88,6 +89,7 @@ export const chatbotController = {
             categories: await AnalyticsModel.getCategoryCounts(),
             uniqueUsers: sessionStats.activeLast24h,
             avgDaily: sessionStats.avgMessages,
+            newsCount: await NewsModel.count(),
             satisfaction
         });
     },

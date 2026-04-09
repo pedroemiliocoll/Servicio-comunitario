@@ -84,15 +84,16 @@ export function useDashboard() {
 
     useEffect(() => {
         Promise.all([
-            newsService.getAll(null, true),
-            chatbotService.getSummary(),
-            settingsService.getAdmin(),
+            newsService.getAll(null, true).catch(() => []),
+            chatbotService.getSummary().catch(() => ({})),
+            settingsService.getAdmin().catch(() => ({})),
             contactService.getSummary().catch(() => ({ unread: 0 })),
             galleryService.getAll().catch(() => []),
         ]).then(([news, summary, settings, contact, gallery]) => {
             const newsList = Array.isArray(news) ? news : (news?.data || []);
             setData({
-                newsCount: newsList.length, 
+                // Prefer centralized newsCount from summary, fallback to local length
+                newsCount: summary.news_count ?? summary.newsCount ?? newsList.length, 
                 totalQuestions: summary.total_messages || summary.totalMessages || 0, 
                 todayCount: summary.today_count || summary.todayCount || 0,
                 hasApiKey: settings.has_api_key || settings.hasApiKey || false, 
@@ -101,7 +102,9 @@ export function useDashboard() {
                 unreadMessages: contact.unread ?? contact.unread_count ?? contact.unreadCount ?? 0,
                 galleryCount: Array.isArray(gallery) ? gallery.length : 0,
             });
-        }).catch(console.error).finally(() => setLoading(false));
+        }).catch(err => {
+            console.error('Dashboard Load Error:', err);
+        }).finally(() => setLoading(false));
     }, []);
 
     return { ...data, loading, formatDate };
