@@ -251,7 +251,16 @@ export function useContactMessages(showToast) {
         setLoading(true);
         const params = { ...filters };
         if (search) params.search = search;
-        contactService.getAll(params).then(setMessages).catch(console.error).finally(() => setLoading(false));
+        contactService.getAll(params)
+            .then(res => {
+                const msgList = Array.isArray(res) ? res : (res?.data || []);
+                setMessages(msgList);
+            })
+            .catch(err => {
+                console.error('Contact Messages Load Error:', err);
+                setMessages([]);
+            })
+            .finally(() => setLoading(false));
     }, [search, filters]);
 
     useEffect(() => { load(); }, [load]);

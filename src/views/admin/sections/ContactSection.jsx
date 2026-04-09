@@ -92,12 +92,12 @@ export default function ContactSection({ showToast }) {
     const convertToCSV = (data) => {
         const headers = ['Nombre', 'Email', 'Asunto', 'Mensaje', 'Leído', 'Fecha'];
         const rows = data.map(m => [
-            m.nombre,
-            m.email,
-            m.asunto,
-            m.mensaje.replace(/"/g, '""'),
+            m.nombre || '',
+            m.email || '',
+            m.asunto || '',
+            (m.mensaje || '').replace(/"/g, '""'),
             m.leido ? 'Sí' : 'No',
-            m.timestamp
+            m.timestamp || ''
         ].map(v => `"${v}"`).join(','));
         return [headers.join(','), ...rows].join('\n');
     };
@@ -216,8 +216,8 @@ export default function ContactSection({ showToast }) {
                                             {!m.leido && <div className="w-2 h-2 rounded-full bg-primary shrink-0"></div>}
                                             <h5 className="font-black text-on-surface text-sm truncate">{m.nombre}</h5>
                                         </div>
-                                        <p className="text-xs font-bold text-on-surface-variant/70 mb-1">{m.asunto}</p>
-                                        <p className="text-[10px] font-black text-on-surface-variant/40 uppercase tracking-widest italic">{new Date(m.timestamp).toLocaleDateString('es-VE')}</p>
+                                        <p className="text-xs font-bold text-on-surface-variant/70 mb-1">{m.asunto || 'Sin asunto'}</p>
+                                        <p className="text-[10px] font-black text-on-surface-variant/40 uppercase tracking-widest italic">{m.timestamp ? new Date(m.timestamp).toLocaleDateString('es-VE') : ''}</p>
                                     </div>
                                     <button onClick={e => { e.stopPropagation(); setItemToDelete(m.id); setShowConfirm(true); }} className="opacity-0 group-hover:opacity-100 p-2 text-error hover:bg-error-container/20 rounded-xl transition-all">
                                         <span className="material-symbols-outlined text-sm">delete</span>
@@ -240,7 +240,7 @@ export default function ContactSection({ showToast }) {
                             <div className="mb-6">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 bg-primary rounded-[1.5rem] flex items-center justify-center text-white font-black text-xl shadow-inner">
-                                        {selected.nombre.substring(0, 1).toUpperCase()}
+                                        {(selected.nombre || '?').substring(0, 1).toUpperCase()}
                                     </div>
                                     <div>
                                         <h4 className="text-xl font-black font-headline text-on-surface">{selected.nombre}</h4>
@@ -250,11 +250,11 @@ export default function ContactSection({ showToast }) {
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="p-3 bg-surface-container-low rounded-xl">
                                         <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest opacity-60 mb-1">Asunto</p>
-                                        <p className="text-sm font-bold text-on-surface">{selected.asunto}</p>
+                                        <p className="text-sm font-bold text-on-surface">{selected.asunto || 'Sin asunto'}</p>
                                     </div>
                                     <div className="p-3 bg-surface-container-low rounded-xl">
                                         <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest opacity-60 mb-1">Fecha</p>
-                                        <p className="text-sm font-bold text-on-surface">{new Date(selected.timestamp).toLocaleString('es-VE')}</p>
+                                        <p className="text-sm font-bold text-on-surface">{selected.timestamp ? new Date(selected.timestamp).toLocaleString('es-VE') : 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@ export default function ContactSection({ showToast }) {
                                         <div className="space-y-3 max-h-48 overflow-y-auto">
                                             {replies.map(r => (
                                                 <div key={r.id} className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-xl">
-                                                    <p className="text-xs text-green-700 mb-1">{new Date(r.created_at).toLocaleString('es-VE')}</p>
+                                                    <p className="text-xs text-green-700 mb-1">{new Date(r.created_at || r.createdAt).toLocaleString('es-VE')}</p>
                                                     <p className="text-sm text-on-surface">{r.respuesta}</p>
                                                 </div>
                                             ))}
