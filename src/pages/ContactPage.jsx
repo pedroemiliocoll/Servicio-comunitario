@@ -53,13 +53,13 @@ export default function ContactPage() {
             <Header />
             <main id="main-content" className="bg-surface min-h-screen pt-16">
                 {/* Page Banner */}
-                <section className="py-20 bg-gradient-to-br from-primary to-primary-container text-on-primary text-center px-8">
-                    <span className="material-symbols-outlined text-5xl mb-4 block text-white" style={{ fontVariationSettings: "'FILL' 1" }}>mail</span>
-                    <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter mb-3 text-white">Contáctanos</h1>
-                    <p className="text-white/80 text-lg max-w-xl mx-auto">Estamos aquí para ayudarte. Escríbenos y te responderemos a la brevedad.</p>
+                <section className="py-16 md:py-20 bg-gradient-to-br from-primary to-primary-container text-on-primary text-center px-4 sm:px-8">
+                    <span className="material-symbols-outlined text-4xl md:text-5xl mb-3 block text-white" style={{ fontVariationSettings: "'FILL' 1"}}>mail</span>
+                    <h1 className="text-3xl md:text-5xl font-headline font-black tracking-tighter mb-3 text-white">Contáctanos</h1>
+                    <p className="text-white/80 text-base md:text-lg max-w-xl mx-auto">Estamos aquí para ayudarte. Escríbenos y te responderemos a la brevedad.</p>
                 </section>
 
-                <section className="py-16 max-w-6xl mx-auto px-8">
+                <section className="py-12 md:py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
                         {/* Form Card */}
                         <div className="lg:col-span-3 bg-surface-container-lowest rounded-[2rem] shadow-sm border border-outline-variant/20 p-8">

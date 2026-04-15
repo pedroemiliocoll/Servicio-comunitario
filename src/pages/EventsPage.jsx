@@ -98,17 +98,17 @@ export default function EventsPage() {
       <Header />
 
       {/* ── Hero ── */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 md:pt-32 pb-16 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 right-0 w-[440px] h-[440px] bg-primary/6 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-secondary-container/30 rounded-full blur-3xl" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-6 md:px-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 border border-primary/15">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5 border border-primary/15">
             <IconCalendar aria-hidden="true" />
             <span>Vida Institucional</span>
           </div>
-          <h1 className="font-headline text-6xl md:text-8xl font-black text-on-surface tracking-tight leading-[0.9] mb-6">
+          <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-on-surface tracking-tight leading-[0.92] mb-5">
             Calendario
             <br />
             <span className="text-primary">de Eventos</span>
@@ -119,7 +119,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-28">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 pb-20 md:pb-28">
         {/* ── Controls bar ── */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           {/* Search */}

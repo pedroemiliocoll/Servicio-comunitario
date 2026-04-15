@@ -252,6 +252,12 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden; /* Prevent any child from causing horizontal scroll */
+}
+
+#root {
+  overflow-x: hidden;
+  position: relative;
 }
 
 body {

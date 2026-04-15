@@ -21,7 +21,7 @@ export default function NewsPage() {
         <div className="bg-surface min-h-screen">
             <Header />
             
-            <main id="main-content" className="pt-32 pb-24 max-w-7xl mx-auto px-6 md:px-12">
+            <main id="main-content" className="pt-20 md:pt-28 pb-20 md:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
                 {/* News Hero (Feature the first news item) */}
                 {!loading && news.length > 0 && <NewsHero item={news[0]} onSelect={selectNews} />}
 

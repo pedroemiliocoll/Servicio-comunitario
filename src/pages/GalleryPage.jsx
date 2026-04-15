@@ -173,28 +173,28 @@ export default function GalleryPage() {
       <Header />
 
       {/* ── Hero ── */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 md:pt-32 pb-16 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 right-0 w-[440px] h-[440px] bg-primary/6 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-secondary-container/30 rounded-full blur-3xl" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-6 md:px-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 border border-primary/15">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5 border border-primary/15">
             <IconImage aria-hidden="true" />
             <span>Vida Institucional</span>
           </div>
-          <h1 className="font-headline text-6xl md:text-8xl font-black text-on-surface tracking-tight leading-[0.9] mb-6">
+          <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-on-surface tracking-tight leading-[0.92] mb-5">
             Galería
             <br />
             <span className="text-primary">de la Institución</span>
           </h1>
-          <p className="text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          <p className="text-base md:text-lg text-on-surface-variant max-w-2xl leading-relaxed">
             Explora la excelencia académica y la vida vibrante en nuestra institución a través de una mirada curada de nuestros momentos más significativos.
           </p>
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-28 space-y-14">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 pb-20 md:pb-28 space-y-10 md:space-y-14">
 
         {/* ── Feature Spotlight ── */}
         {featured && (
@@ -295,7 +295,7 @@ export default function GalleryPage() {
           </div>
         ) : (
           /* Masonry-style with CSS columns */
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+          <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
             {filtered.map((photo, i) => {
               const tall = photo.size === 'lg' || i % 5 === 0;
               return (

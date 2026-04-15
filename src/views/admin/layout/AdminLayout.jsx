@@ -45,15 +45,8 @@ export default function AdminLayout({
                 userRole={userRole}
             />
 
-            {/* Mobile Overlay */}
-            {sidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-on-surface/40 backdrop-blur-[2px] z-[90] lg:hidden transition-opacity animate-in fade-in"
-                    onClick={() => setSidebarOpen(false)}
-                />
-            )}
-
-            <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? 'lg:pl-64' : 'lg:pl-64'}`}>
+            {/* Main content — offset by sidebar width on desktop */}
+            <div className="flex-1 flex flex-col min-w-0 lg:pl-72">
                 <AdminTopBar
                     sectionName={currentLabel}
                     userName={currentUser?.username}
@@ -63,7 +56,7 @@ export default function AdminLayout({
                     toggleTheme={toggleTheme}
                 />
 
-                <main className="flex-1 p-4 lg:p-8 animate-in fade-in duration-700">
+                <main className="flex-1 p-4 lg:p-8 animate-in fade-in duration-700" id="main-content">
                     <div className="max-w-[1600px] mx-auto">
                         {children}
                     </div>
@@ -71,9 +64,8 @@ export default function AdminLayout({
 
                 {/* Toast Notification */}
                 {toast && (
-                    <div className={`fixed bottom-8 right-8 z-[200] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-right-10 duration-300 ${toast.type === 'error' ? 'bg-error text-on-error' : 'bg-[#005bbf] text-white'
-                        }`}>
-                        <span className="material-symbols-outlined text-[20px]">
+                    <div className={`fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-right-10 duration-300 max-w-[calc(100vw-3rem)] ${toast.type === 'error' ? 'bg-error text-on-error' : 'bg-primary text-on-primary'}`}>
+                        <span className="material-symbols-outlined text-[20px] shrink-0">
                             {toast.type === 'error' ? 'report' : 'check_circle'}
                         </span>
                         <span className="text-sm font-bold tracking-tight">{toast.msg}</span>
@@ -83,3 +75,4 @@ export default function AdminLayout({
         </div>
     );
 }
+

@@ -84,17 +84,17 @@ export default function AcademicPage() {
       <Header />
 
       {/* ── Hero ── */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 md:pt-32 pb-16 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-24 right-0 w-[480px] h-[480px] bg-primary/6 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-secondary-container/40 rounded-full blur-3xl" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-6 md:px-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 border border-primary/15">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5 border border-primary/15">
             <IconGradCap />
             <span>Formación de Calidad</span>
           </div>
-          <h1 className="font-headline text-6xl md:text-8xl font-black text-on-surface tracking-tight leading-[0.9] mb-6">
+          <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-on-surface tracking-tight leading-[0.92] mb-5">
             Oferta
             <br />
             <span className="text-primary">Académica</span>
@@ -105,7 +105,7 @@ export default function AcademicPage() {
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-28 space-y-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 pb-20 md:pb-28 space-y-16 md:space-y-24">
 
         {/* ── Niveles Educativos ── */}
         <section>

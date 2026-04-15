@@ -18,34 +18,34 @@ export default function EponimoPage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 md:pt-32 pb-16 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 -left-20 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-3xl" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-6 md:px-16">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
             {/* Imagen */}
-            <div className="relative">
-              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white">
-                <img 
-                  src="/assets/images/pedro-emilio-coll.png" 
-                  alt="Pedro Emilio Coll" 
+            <div className="relative shrink-0">
+              <div className="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white">
+                <img
+                  src="/assets/images/pedro-emilio-coll.png"
+                  alt="Pedro Emilio Coll"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-amber-500 rounded-full flex items-center justify-center shadow-lg">
+              <div className="absolute -bottom-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-amber-500 rounded-full flex items-center justify-center shadow-lg">
                 <IconAward />
               </div>
             </div>
 
             {/* Info */}
             <div className="flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-sm font-semibold mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-sm font-semibold mb-5">
                 <IconStar />
                 <span>Nuestro Epónimo</span>
               </div>
-              <h1 className="font-headline text-5xl md:text-7xl font-black text-on-surface tracking-tight leading-[0.9] mb-6">
+              <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-black text-on-surface tracking-tight leading-[0.92] mb-5">
                 Pedro Emilio<br />
                 <span className="text-primary">Coll</span>
               </h1>
@@ -68,7 +68,7 @@ export default function EponimoPage() {
       </section>
 
       {/* Biografía */}
-      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-28">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 pb-20 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 mb-20">
           <div className="space-y-6">
             <div className="flex items-center gap-3 border-l-4 border-primary pl-4">
