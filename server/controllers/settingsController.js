@@ -21,8 +21,11 @@ export const settingsController = {
     },
 
     async updateLiceoInfo(req, res) {
-        const { mision, vision, ubicacion, contacto, horario, estadisticas, lema } = req.body;
-        await SettingsModel.saveLiceoInfo({ mision, vision, ubicacion, contacto, horario, estadisticas, lema });
+        const { nombre, nombreCorto, email, telefono, direccion, mision, vision, ubicacion, contacto, horario, estadisticas, lema } = req.body;
+        await SettingsModel.saveLiceoInfo({ 
+            nombre, nombreCorto, email, telefono, direccion,
+            mision, vision, ubicacion, contacto, horario, estadisticas, lema 
+        });
         await logActivity('SETTINGS_UPDATE', 'Información del liceo actualizada');
         res.json({ message: 'Información del liceo actualizada correctamente' });
     },

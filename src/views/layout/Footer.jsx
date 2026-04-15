@@ -23,7 +23,7 @@ const CONTACT_INFO = [
     { icon: 'location_on', text: 'Av. Principal, Caracas, Venezuela' },
     { icon: 'call',        text: '+58 (212) 555-0123' },
     { icon: 'mail',        text: 'contacto@uenpedroemiliocoll.edu.ve' },
-    { icon: 'schedule',   text: 'Lun–Vie 7:00 AM – 1:00 PM' },
+    { icon: 'schedule',   text: 'Lun–Vie 7:00 AM – 5:00 PM' },
 ];
 
 export default function Footer() {
@@ -31,22 +31,22 @@ export default function Footer() {
 
     return (
         <footer className="bg-surface-container-low border-t border-outline-variant/20 w-full">
-            <div className="max-w-7xl mx-auto px-8 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-10 sm:mb-12">
                     {/* Brand */}
                     <div className="lg:col-span-1">
-                        <div className="flex items-center gap-3 mb-4">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                             <img
                                 alt="UEN Logo"
-                                className="h-10 w-10 object-contain"
+                                className="h-8 sm:h-10 w-8 sm:w-10 object-contain"
                                 src="/assets/images/logo.png"
                                 onError={e => { e.currentTarget.style.display = 'none'; }}
                             />
-                            <span className="font-headline font-bold text-on-surface uppercase tracking-widest text-sm">
-                                UEN Pedro<br />Emilio Coll
+                            <span className="font-headline font-bold text-on-surface uppercase tracking-widest text-xs sm:text-sm">
+                                UEN Pedro<br className="sm:hidden" /> Emilio Coll
                             </span>
                         </div>
-                        <p className="text-on-surface-variant text-sm leading-relaxed">
+                        <p className="text-on-surface-variant text-xs sm:text-sm leading-relaxed">
                             Institución educativa comprometida con la excelencia académica y el desarrollo integral de nuestra comunidad.
                         </p>
                     </div>
@@ -54,13 +54,13 @@ export default function Footer() {
                     {/* Nav columns */}
                     {FOOTER_LINKS.map(col => (
                         <div key={col.title}>
-                            <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-4">{col.title}</h4>
-                            <ul className="space-y-3">
+                            <h4 className="font-headline font-black text-on-surface text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4">{col.title}</h4>
+                            <ul className="space-y-1 sm:space-y-3">
                                 {col.links.map(link => (
                                     <li key={link.label}>
                                         <Link
                                             to={link.to}
-                                            className="text-on-surface-variant text-sm hover:text-primary transition-colors"
+                                            className="text-on-surface-variant text-xs sm:text-sm hover:text-primary transition-colors inline-block py-2 sm:py-1 block min-h-[40px] sm:min-h-[auto]"
                                         >
                                             {link.label}
                                         </Link>
@@ -72,12 +72,12 @@ export default function Footer() {
 
                     {/* Contact */}
                     <div>
-                        <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-4">Contacto</h4>
-                        <ul className="space-y-3">
+                        <h4 className="font-headline font-black text-on-surface text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4">Contacto</h4>
+                        <ul className="space-y-2 sm:space-y-3">
                             {CONTACT_INFO.map(item => (
-                                <li key={item.icon} className="flex items-start gap-2 text-on-surface-variant text-sm">
+                                <li key={item.icon} className="flex items-start gap-2 text-on-surface-variant text-xs sm:text-sm">
                                     <span className="material-symbols-outlined text-primary text-base mt-0.5 flex-shrink-0" aria-hidden="true">{item.icon}</span>
-                                    {item.text}
+                                    <span className="break-words">{item.text}</span>
                                 </li>
                             ))}
                         </ul>
@@ -85,14 +85,14 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="border-t border-outline-variant/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p className="text-on-surface-variant text-xs">
+                <div className="border-t border-outline-variant/20 pt-6 sm:pt-8 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
+                    <p className="text-on-surface-variant text-[10px] sm:text-xs">
                         © {year} UEN Pedro Emilio Coll. Todos los derechos reservados.
                     </p>
-                    <div className="flex gap-6">
-                        <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Política de Privacidad</a>
-                        <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Términos de Servicio</a>
-                        <a href="/contacto" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Atención al Estudiante</a>
+                    <div className="flex flex-wrap justify-center gap-3 sm:gap-6">
+                        <a href="#" className="text-on-surface-variant text-[10px] sm:text-xs hover:text-primary transition-colors">Política de Privacidad</a>
+                        <a href="#" className="text-on-surface-variant text-[10px] sm:text-xs hover:text-primary transition-colors">Términos de Servicio</a>
+                        <a href="/contacto" className="text-on-surface-variant text-[10px] sm:text-xs hover:text-primary transition-colors">Atención al Estudiante</a>
                     </div>
                 </div>
             </div>

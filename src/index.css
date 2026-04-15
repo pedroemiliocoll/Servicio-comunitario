@@ -323,6 +323,105 @@ button {
   transform: rotate(360deg);
 }
 
+/* ═══ Mobile Touch Optimizations ═══ */
+@media (max-width: 640px) {
+  /* Improve button touch targets globally */
+  button, 
+  [role="button"],
+  .btn,
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.625rem 1rem;
+  }
+
+  /* Ensure filter and tab buttons have good touch targets */
+  .filter-btn,
+  .tab-btn,
+  [class*="rounded-full"] {
+    min-height: 40px;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Improve link touch targets */
+  a,
+  .nav-link,
+  .nav-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Better spacing for mobile forms */
+  input,
+  select,
+  textarea {
+    min-height: 48px;
+    font-size: 16px !important;
+  }
+
+  /* Fix for iOS - prevents zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Smooth scrolling for mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Better scrollbar for touch */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--md-outline);
+    border-radius: 3px;
+  }
+}
+
+/* ═══ Touch-friendly interactive elements ═══ */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.touch-target-padded {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+/* ═══ Reduce motion for users who prefer it ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════
    ACCESSIBILITY IMPROVEMENTS
    ═══════════════════════════════════════════════════════════ */

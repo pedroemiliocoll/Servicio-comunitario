@@ -173,41 +173,42 @@ export default function GalleryPage() {
       <Header />
 
       {/* ── Hero ── */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-20 sm:pt-24 lg:pt-32 pb-12 sm:pb-16 lg:pb-20 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-20 right-0 w-[440px] h-[440px] bg-primary/6 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-secondary-container/30 rounded-full blur-3xl" />
+          <div className="absolute -top-20 right-0 w-[300px] sm:w-[440px] h-[300px] sm:h-[440px] bg-primary/6 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-48 sm:w-72 h-48 sm:h-72 bg-secondary-container/30 rounded-full blur-3xl" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-6 md:px-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 border border-primary/15">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:px-16">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-semibold mb-4 sm:mb-6 border border-primary/15">
             <IconImage aria-hidden="true" />
-            <span>Vida Institucional</span>
+            <span className="hidden xs:inline">Vida Institucional</span>
+            <span className="xs:hidden">Galería</span>
           </div>
-          <h1 className="font-headline text-6xl md:text-8xl font-black text-on-surface tracking-tight leading-[0.9] mb-6">
+          <h1 className="font-headline text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black text-on-surface tracking-tight leading-[0.9] mb-4 sm:mb-6">
             Galería
             <br />
             <span className="text-primary">de la Institución</span>
           </h1>
-          <p className="text-lg text-on-surface-variant max-w-2xl leading-relaxed">
-            Explora la excelencia académica y la vida vibrante en nuestra institución a través de una mirada curada de nuestros momentos más significativos.
+          <p className="text-sm sm:text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+            Explora la excelencia académica y la vida vibrante en nuestra institución.
           </p>
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-28 space-y-14">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:px-16 pb-16 sm:pb-20 lg:pb-28 space-y-8 sm:space-y-14">
 
         {/* ── Feature Spotlight ── */}
         {featured && (
-          <div className="relative rounded-3xl overflow-hidden" style={{ minHeight: 360 }}>
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden" style={{ minHeight: 280 sm:360 }}>
             <div className="absolute inset-0 bg-gradient-to-br from-primary/60 to-primary" />
             {(featured.image_url || featured.url) && (
               <img src={featured.image_url || featured.url} alt={featured.titulo} className="absolute inset-0 w-full h-full object-cover" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            {/* Grid of sub-items */}
-            <div className="absolute inset-0 flex">
+            {/* Grid of sub-items - hidden on mobile */}
+            <div className="absolute inset-0 flex hidden md:flex">
               <div className="flex-1" />
-              <div className="w-72 hidden md:flex flex-col p-4 gap-3">
+              <div className="w-72 flex flex-col p-4 gap-3">
                 {displayPhotos.slice(1, 3).map((p, i) => (
                   <div key={p.id} onClick={() => openLightbox(p)} className="flex-1 rounded-xl overflow-hidden cursor-pointer relative">
                     {(p.image_url || p.url) ? (
@@ -221,51 +222,50 @@ export default function GalleryPage() {
                 ))}
               </div>
             </div>
-            <div className="relative p-8 md:p-12 flex flex-col justify-end" style={{ minHeight: 360 }}>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-xs font-semibold mb-3 w-fit">
+            <div className="relative p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-end" style={{ minHeight: 280 sm:360 }}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-xs font-semibold mb-2 sm:mb-3 w-fit">
                 <IconBuilding />
-                <span>Campus Central Pedro Emilio Coll</span>
+                <span className="hidden sm:inline">Campus Central Pedro Emilio Coll</span>
+                <span className="sm:hidden">Institución</span>
               </div>
-              <h2 className="font-headline text-3xl md:text-4xl font-black text-white leading-tight mb-2">
+              <h2 className="font-headline text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight mb-2">
                 {featured.titulo}
               </h2>
-              <p className="text-white/80 max-w-md">{featured.descripcion}</p>
+              <p className="text-white/80 max-w-md text-sm sm:text-base">{featured.descripcion}</p>
             </div>
           </div>
         )}
 
         {/* ── Filters + Layout toggle ── */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          {/* Category tabs */}
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar galería por categoría">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          {/* Category tabs - scrollable on mobile */}
+          <div className="flex flex-wrap gap-2 max-w-full overflow-x-auto pb-2 sm:pb-0" role="group" aria-label="Filtrar galería por categoría">
             {CATEGORIES.map(cat => (
               <button key={cat.key} onClick={() => setCategory(cat.key)}
                 aria-pressed={category === cat.key}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                   category === cat.key
                     ? 'bg-[#005bbf] text-white shadow-md shadow-primary/25'
                     : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
                 }`}
               >
-                <cat.Icon aria-hidden="true" />
-                {cat.label}
+                <cat.Icon aria-hidden="true" className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden xs:inline">{cat.label}</span>
+                <span className="xs:hidden">{cat.label.substring(0, 4)}</span>
               </button>
             ))}
-            <span className="ml-2 flex items-center text-xs text-on-surface-variant self-center" aria-live="polite" aria-atomic="true">
-              {filtered.length} foto{filtered.length !== 1 ? 's' : ''}
-            </span>
           </div>
-          {/* Layout toggle */}
-          <div className="flex gap-1 bg-surface-container p-1 rounded-full" role="group" aria-label="Cambiar diseño de galería">
+          {/* Layout toggle - hide on very small screens */}
+          <div className="flex gap-1 bg-surface-container p-1 rounded-full self-end sm:self-auto">
             <button onClick={() => setLayout('masonry')}
-              className={`p-2.5 rounded-full transition-all ${layout === 'masonry' ? 'bg-[#005bbf] text-white shadow-sm' : 'text-on-surface-variant hover:text-on-surface'}`}
+              className={`p-2 sm:p-2.5 rounded-full transition-all ${layout === 'masonry' ? 'bg-[#005bbf] text-white shadow-sm' : 'text-on-surface-variant hover:text-on-surface'}`}
               aria-label="Diseño masonry"
               aria-pressed={layout === 'masonry'}
             >
               <IconColumns aria-hidden="true" />
             </button>
             <button onClick={() => setLayout('grid')}
-              className={`p-2.5 rounded-full transition-all ${layout === 'grid' ? 'bg-[#005bbf] text-white shadow-sm' : 'text-on-surface-variant hover:text-on-surface'}`}
+              className={`p-2 sm:p-2.5 rounded-full transition-all ${layout === 'grid' ? 'bg-[#005bbf] text-white shadow-sm' : 'text-on-surface-variant hover:text-on-surface'}`}
               aria-label="Diseño de cuadrícula"
               aria-pressed={layout === 'grid'}
             >
@@ -278,15 +278,15 @@ export default function GalleryPage() {
         {loading ? (
           <GalleryGridSkeleton count={8} />
         ) : filtered.length === 0 ? (
-          <div className="py-24 flex flex-col items-center gap-4 text-center">
-            <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant"><IconImage /></div>
-            <p className="text-on-surface-variant">No hay fotos en esta categoría.</p>
+          <div className="py-12 sm:py-24 flex flex-col items-center gap-4 text-center">
+            <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant"><IconImage /></div>
+            <p className="text-on-surface-variant text-sm sm:text-base">No hay fotos en esta categoría.</p>
             <button onClick={() => setCategory('all')} className="px-5 py-2.5 bg-primary/10 text-primary text-sm font-semibold rounded-full hover:bg-primary/20 transition-colors">
               Ver todas
             </button>
           </div>
         ) : layout === 'grid' ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
             {filtered.map(photo => (
               <div key={photo.id} className="aspect-square">
                 <PhotoPlaceholder photo={photo} onClick={openLightbox} />
@@ -295,11 +295,11 @@ export default function GalleryPage() {
           </div>
         ) : (
           /* Masonry-style with CSS columns */
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+          <div className="columns-2 sm:columns-3 lg:columns-4 gap-2 sm:3 space-y-2 sm:space-y-3">
             {filtered.map((photo, i) => {
               const tall = photo.size === 'lg' || i % 5 === 0;
               return (
-                <div key={photo.id} className={`break-inside-avoid mb-3 ${tall ? 'aspect-[3/4]' : 'aspect-square'}`}>
+                <div key={photo.id} className={`break-inside-avoid mb-2 sm:mb-3 ${tall ? 'aspect-[3/4]' : 'aspect-square'}`}>
                   <PhotoPlaceholder photo={photo} onClick={openLightbox} />
                 </div>
               );

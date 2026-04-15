@@ -33,23 +33,38 @@ export const SettingsModel = {
     async getLiceoInfo() {
         const all = await this.getAll();
         return {
+            // Datos básicos del liceo (guardados desde el panel admin)
             nombre:       all.nombre             || 'U.E.N. Pedro Emilio Coll',
             nombreCorto:  all.nombreCorto        || 'Liceo Pedro Emilio Coll',
+            email:        all.email              || 'contacto@uenpedroemiliocoll.edu.ve',
+            telefono:     all.telefono           || '+58 (212) 555-0123',
+            direccion:    all.direccion          || 'Av. Intercomunal de El Valle, Caracas 1090, Distrito Capital',
+            
+            // Datos institucionales (estructura existente)
             tipo:         all.tipo                || 'Unidad Educativa Nacional',
             lema:         all.lema                || 'Formando ciudadanos con excelencia y valores',
             mision:       all.mision              || '',
             vision:       all.vision              || '',
             ubicacion:    all.ubicacion           || { estado: '', municipio: '', direccion: '' },
             contacto:     all.contacto            || { telefono: '', email: '', redes_sociales: {} },
-            horario:      all.horario             || { entrada: '7:00 AM', salida: '1:00 PM' },
+            horario:      all.horario             || { entrada: '7:00 AM', salida: '5:00 PM' },
             niveles_educativos: all.niveles_educativos || ['1er Año','2do Año','3er Año','4to Año','5to Año'],
             estadisticas: all.estadisticas        || { anios: 25, estudiantes: 500, docentes: 40, egresados: 5000 },
         };
     },
 
     async saveLiceoInfo(data) {
-        const fields = ['mision', 'vision', 'ubicacion', 'contacto', 'horario', 'estadisticas', 'lema'];
-        for (const f of fields) {
+        // Campos del formulario de identidad del liceo
+        const basicFields = ['nombre', 'nombreCorto', 'email', 'telefono', 'direccion'];
+        for (const f of basicFields) {
+            if (data[f] !== undefined) {
+                await this.set(f, data[f]);
+            }
+        }
+        
+        // Campos institucionales existentes
+        const institutionalFields = ['mision', 'vision', 'ubicacion', 'contacto', 'horario', 'estadisticas', 'lema'];
+        for (const f of institutionalFields) {
             if (data[f] !== undefined) {
                 await this.set(f, data[f]);
             }

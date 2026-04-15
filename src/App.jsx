@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { LiceoProvider } from './context/LiceoContext';
 import { useEffect, Suspense, lazy } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import { PageTransitionRouter, PageLoader } from './components/PageTransition';
@@ -38,16 +39,18 @@ function ChatbotLoader() {
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <ScrollToTop />
-        <AnalyticsInit />
-        <ErrorBoundary>
-          <Suspense fallback={<PageLoader />}>
-            <PageTransitionRouter />
-          </Suspense>
-          <ChatbotLoader />
-        </ErrorBoundary>
-      </Router>
+      <LiceoProvider>
+        <Router>
+          <ScrollToTop />
+          <AnalyticsInit />
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <PageTransitionRouter />
+            </Suspense>
+            <ChatbotLoader />
+          </ErrorBoundary>
+        </Router>
+      </LiceoProvider>
     </ThemeProvider>
   );
 }
