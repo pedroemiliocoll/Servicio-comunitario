@@ -199,7 +199,7 @@ export default function GalleryPage() {
 
         {/* ── Feature Spotlight ── */}
         {featured && (
-          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden" style={{ minHeight: 280 sm:360 }}>
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden min-h-[280px] sm:min-h-[360px]">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/60 to-primary" />
             {(featured.image_url || featured.url) && (
               <img src={featured.image_url || featured.url} alt={featured.titulo} className="absolute inset-0 w-full h-full object-cover" />
@@ -222,7 +222,7 @@ export default function GalleryPage() {
                 ))}
               </div>
             </div>
-            <div className="relative p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-end" style={{ minHeight: 280 sm:360 }}>
+            <div className="relative p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-end min-h-[280px] sm:min-h-[360px]">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-xs font-semibold mb-2 sm:mb-3 w-fit">
                 <IconBuilding />
                 <span className="hidden sm:inline">Campus Central Pedro Emilio Coll</span>
@@ -295,7 +295,7 @@ export default function GalleryPage() {
           </div>
         ) : (
           /* Masonry-style with CSS columns */
-          <div className="columns-2 sm:columns-3 lg:columns-4 gap-2 sm:3 space-y-2 sm:space-y-3">
+          <div className="columns-2 sm:columns-3 lg:columns-4 gap-2 sm:gap-3 space-y-2 sm:space-y-3">
             {filtered.map((photo, i) => {
               const tall = photo.size === 'lg' || i % 5 === 0;
               return (

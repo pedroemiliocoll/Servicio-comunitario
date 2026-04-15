@@ -360,7 +360,8 @@ export function MapSector() {
                         title="Ubicación UEN Pedro Emilio Coll"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.5!2d-66.9226658!3d10.450836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2af5f3f4e3fd07%3A0x45e2100c8cf9d884!2sUEN%20%22Pedro%20Emilio%20Coll%22!5e0!3m2!1ses!2sve!4v1700000000000!5m2!1ses!2sve"
                         width="100%"
-                        height="300 sm:350 lg:450"
+                        height="300"
+                        className="sm:h-[350px] lg:h-[450px]"
                         style={{ border: 0 }}
                         allowFullScreen
                         loading="lazy"
