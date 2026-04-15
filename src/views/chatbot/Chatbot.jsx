@@ -54,19 +54,18 @@ function FeedbackButtons({ onFeedback, disabled }) {
 }
 
 function getPositionClasses(position) {
-    // On mobile: always stick to bottom with safe side margins.
-    // On sm+: use the configured position.
-    const mobileBase = 'fixed z-[100] transition-all duration-300 bottom-24 left-2 right-2 sm:left-auto sm:right-auto sm:bottom-28 sm:w-[380px]';
+    const mobileClasses = 'fixed z-[100] transition-all duration-300 left-4 right-4 bottom-24 sm:w-[380px]';
+    // Use an explicit sm: styling per position to override the left/right/bottom mobile defaults
     switch (position) {
         case 'bottom-left':
-            return `${mobileBase} sm:left-6 origin-bottom-left`;
+            return `${mobileClasses} sm:left-6 sm:right-auto sm:bottom-28 origin-bottom-left`;
         case 'top-right':
-            return `${mobileBase} sm:right-6 sm:top-20 sm:bottom-auto origin-top-right`;
+            return `${mobileClasses} sm:right-6 sm:left-auto sm:top-20 sm:bottom-auto origin-top-right`;
         case 'top-left':
-            return `${mobileBase} sm:left-6 sm:top-20 sm:bottom-auto origin-top-left`;
+            return `${mobileClasses} sm:left-6 sm:right-auto sm:top-20 sm:bottom-auto origin-top-left`;
         case 'bottom-right':
         default:
-            return `${mobileBase} sm:right-6 origin-bottom-right`;
+            return `${mobileClasses} sm:right-6 sm:left-auto sm:bottom-28 origin-bottom-right`;
     }
 }
 
