@@ -150,7 +150,12 @@ export function useSettings(showToast) {
 
     useEffect(() => {
         settingsService.getAdmin().then(d => { 
-            setInfo(d); 
+            // Garantizar que horario existe para los inputs
+            const normalized = {
+                ...d,
+                horario: d.horario || { entrada: '', salida: '' }
+            };
+            setInfo(normalized); 
             setApiKey(d.api_key || d.apiKey || ''); 
         })
             .catch(console.error).finally(() => setLoading(false));

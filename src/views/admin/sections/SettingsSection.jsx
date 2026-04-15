@@ -116,6 +116,26 @@ export default function SettingsSection({ showToast }) {
                                 onChange={e => s.setInfo(i => ({ ...i, direccion: e.target.value }))} 
                             />
                         </div>
+
+                        {/* Horario */}
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest ml-4 opacity-60">Hora de Apertura</label>
+                            <input 
+                                className="w-full bg-surface-container-low border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-secondary/20 text-sm font-bold shadow-sm" 
+                                value={s.info.horario?.entrada || ''} 
+                                placeholder="Ej: 7:00 AM"
+                                onChange={e => s.setInfo(i => ({ ...i, horario: { ...i.horario, entrada: e.target.value } }))} 
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest ml-4 opacity-60">Hora de Cierre</label>
+                            <input 
+                                className="w-full bg-surface-container-low border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-secondary/20 text-sm font-bold shadow-sm" 
+                                value={s.info.horario?.salida || ''} 
+                                placeholder="Ej: 5:00 PM"
+                                onChange={e => s.setInfo(i => ({ ...i, horario: { ...i.horario, salida: e.target.value } }))} 
+                            />
+                        </div>
                     </div>
                     <button className="w-full bg-[#004a9e] text-white py-5 rounded-2xl font-headline font-black text-sm shadow-xl shadow-lg shadow-black/20 hover:scale-[1.01] active:scale-[0.99] transition-all" onClick={s.saveInfo}>
                         Sincronizar Datos Institucionales
