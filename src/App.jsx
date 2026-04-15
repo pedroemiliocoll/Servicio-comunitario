@@ -35,19 +35,23 @@ function ChatbotLoader() {
   );
 }
 
+import { LiceoProvider } from './context/LiceoContext';
+
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <ScrollToTop />
-        <AnalyticsInit />
-        <ErrorBoundary>
-          <Suspense fallback={<PageLoader />}>
-            <PageTransitionRouter />
-          </Suspense>
-          <ChatbotLoader />
-        </ErrorBoundary>
-      </Router>
+      <LiceoProvider>
+        <Router>
+          <ScrollToTop />
+          <AnalyticsInit />
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <PageTransitionRouter />
+            </Suspense>
+            <ChatbotLoader />
+          </ErrorBoundary>
+        </Router>
+      </LiceoProvider>
     </ThemeProvider>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewsGrid, NewsHero } from '../news/NewsComponents';
 import { contactService } from '../../services/contactService.js';
+import { useLiceoInfo } from '../../context/LiceoContext';
 
 export function NewsSector({ previewNews = [] }) {
     return (
@@ -190,6 +191,7 @@ const SUBJECTS = [
 ];
 
 export function ContactSector() {
+    const { liceoInfo } = useLiceoInfo();
     const [form, setForm] = useState({ nombre: '', email: '', asunto: 'general', mensaje: '' });
     const [status, setStatus] = useState(null); // null | 'sending' | 'done' | 'error'
     const [error, setError] = useState('');
@@ -228,7 +230,11 @@ export function ContactSector() {
                             <h2 className="text-4xl font-headline font-bold mb-6 text-on-primary">¿Necesitas información?</h2>
                             <p className="text-on-primary/80 text-lg mb-10">Estamos aquí para ayudarte. Contáctanos por cualquiera de nuestros canales oficiales.</p>
                             <div className="space-y-6">
-                                {[['call', '+58 (212) 555-0123'], ['mail', 'contacto@uenpedroemiliocoll.edu.ve'], ['location_on', 'Av. Intercomunal de El Valle, Caracas 1090, Distrito Capital']].map(([icon, text]) => (
+                                {[
+                                    ['call', liceoInfo.telefono], 
+                                    ['mail', liceoInfo.email], 
+                                    ['location_on', liceoInfo.direccion]
+                                ].map(([icon, text]) => (
                                     <div key={icon} className="flex items-center gap-4">
                                         <div className="w-10 h-10 bg-on-primary/10 rounded-full flex items-center justify-center">
                                             <span className="material-symbols-outlined">{icon}</span>
@@ -341,6 +347,7 @@ export function ContactSector() {
 }
 
 export function MapSector() {
+    const { liceoInfo } = useLiceoInfo();
     return (
         <section className="py-24 bg-surface-container-low" id="location">
             <div className="max-w-7xl mx-auto px-8">
@@ -348,7 +355,7 @@ export function MapSector() {
                     <span className="text-primary font-black text-[10px] uppercase tracking-[0.2em] mb-4 block">Ubicación</span>
                     <h2 className="text-4xl md:text-5xl font-headline font-black text-on-surface mb-4 tracking-tighter">Encuéntranos</h2>
                     <p className="text-on-surface-variant font-medium leading-relaxed max-w-2xl mx-auto">
-                        Estamos ubicados en la Av. Intercomunal de El Valle, Caracas 1090, Distrito Capital.
+                        Estamos ubicados en {liceoInfo.direccion}.
                     </p>
                 </div>
                 <div className="rounded-[2rem] overflow-hidden shadow-2xl border border-outline-variant/10">
@@ -370,7 +377,7 @@ export function MapSector() {
                         </div>
                         <div>
                             <p className="font-headline font-bold text-on-surface text-sm">Dirección</p>
-                            <p className="text-on-surface-variant text-sm">Av. Intercomunal de El Valle, Caracas 1090</p>
+                            <p className="text-on-surface-variant text-sm">{liceoInfo.direccion}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -379,7 +386,7 @@ export function MapSector() {
                         </div>
                         <div>
                             <p className="font-headline font-bold text-on-surface text-sm">Horario</p>
-                            <p className="text-on-surface-variant text-sm">Lunes a Viernes, 7:00 AM – 5:00 PM</p>
+                            <p className="text-on-surface-variant text-sm">Lunes a Viernes, {liceoInfo.horarios.entrada} – {liceoInfo.horarios.salida}</p>
                         </div>
                     </div>
                     <a

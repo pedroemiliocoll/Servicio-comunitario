@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import { useLiceoInfo } from '../../context/LiceoContext';
 import SearchModal from './SearchModal';
 import PrefetchLink from '../../components/PrefetchLink';
 
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 export default function Header() {
     const { pathname } = useLocation();
     const { theme, toggleTheme } = useTheme();
+    const { liceoInfo } = useLiceoInfo();
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
 
@@ -48,13 +50,13 @@ export default function Header() {
             </a>
             <div className="flex justify-between items-center px-8 h-16 w-full max-w-7xl mx-auto">
                 {/* Logo */}
-                <PrefetchLink to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity" aria-label="UEN Pedro Emilio Coll - Ir al inicio">
+                <PrefetchLink to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity" aria-label={`${liceoInfo.nombre} - Ir al inicio`}>
                     <img
-                        alt="Logo UEN Pedro Emilio Coll"
+                        alt={`Logo ${liceoInfo.nombre}`}
                         className="h-10 w-10 object-contain"
                         src="/assets/images/logo.png"
                     />
-                    <span className="text-xl font-bold text-on-surface font-headline tracking-tight">UEN Pedro Emilio Coll</span>
+                    <span className="text-xl font-bold text-on-surface font-headline tracking-tight">{liceoInfo.nombre}</span>
                 </PrefetchLink>
 
                 {/* Desktop nav */}

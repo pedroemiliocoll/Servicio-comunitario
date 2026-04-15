@@ -5,6 +5,7 @@ import Footer from '../views/layout/Footer';
 import Chatbot from '../views/chatbot/Chatbot';
 import { contactService } from '../services/contactService.js';
 import { useDocumentTitle } from '../controllers/useDocumentTitle';
+import { useLiceoInfo } from '../context/LiceoContext';
 
 const SUBJECTS = [
     { value: 'general',       label: 'Consulta general' },
@@ -14,20 +15,14 @@ const SUBJECTS = [
     { value: 'otro',          label: 'Otro asunto' },
 ];
 
-const CONTACT_INFO = [
-    { icon: 'location_on', label: 'Dirección',  text: 'Av. Principal, Caracas, Venezuela' },
-    { icon: 'call',        label: 'Teléfono',   text: '+58 (212) 555-0123' },
-    { icon: 'mail',        label: 'Email',      text: 'contacto@uenpedroemiliocoll.edu.ve' },
-    { icon: 'schedule',   label: 'Horario',    text: 'Lunes a Viernes, 7:00 AM – 1:00 PM' },
-];
-
 export default function ContactPage() {
+    const { liceoInfo } = useLiceoInfo();
     const [form, setForm] = useState({ nombre: '', email: '', asunto: 'general', mensaje: '' });
     const [status, setStatus] = useState(null);
     const [error, setError] = useState('');
     const [touched, setTouched] = useState({});
 
-    useDocumentTitle('Contacto | U.E.N. "Pedro Emilio Coll"');
+    useDocumentTitle(`Contacto | ${liceoInfo.nombre}`);
 
     const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
     const handleBlur = e => setTouched(t => ({ ...t, [e.target.name]: true }));
@@ -175,7 +170,12 @@ export default function ContactPage() {
                             <div className="bg-surface-container-lowest rounded-[2rem] shadow-sm border border-outline-variant/20 p-8">
                                 <h3 className="font-headline font-bold text-lg text-on-surface mb-6">Información de Contacto</h3>
                                 <div className="space-y-5">
-                                    {CONTACT_INFO.map(item => (
+                                    {[
+                                        { icon: 'location_on', label: 'Dirección',  text: liceoInfo.direccion },
+                                        { icon: 'call',        label: 'Teléfono',   text: liceoInfo.telefono },
+                                        { icon: 'mail',        label: 'Email',      text: liceoInfo.email },
+                                        { icon: 'schedule',    label: 'Horario',    text: `Lunes a Viernes, ${liceoInfo.horarios.entrada} – ${liceoInfo.horarios.salida}` },
+                                    ].map(item => (
                                         <div key={item.icon} className="flex items-start gap-4">
                                             <div className="w-10 h-10 bg-primary-fixed rounded-xl flex items-center justify-center flex-shrink-0">
                                                 <span className="material-symbols-outlined text-on-primary-fixed" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useLiceoInfo } from '../../context/LiceoContext';
 
 const FOOTER_LINKS = [
     {
@@ -19,15 +20,16 @@ const FOOTER_LINKS = [
     },
 ];
 
-const CONTACT_INFO = [
-    { icon: 'location_on', text: 'Av. Principal, Caracas, Venezuela' },
-    { icon: 'call',        text: '+58 (212) 555-0123' },
-    { icon: 'mail',        text: 'contacto@uenpedroemiliocoll.edu.ve' },
-    { icon: 'schedule',   text: 'Lun–Vie 7:00 AM – 1:00 PM' },
-];
-
 export default function Footer() {
+    const { liceoInfo } = useLiceoInfo();
     const year = new Date().getFullYear();
+
+    const contactInfo = [
+        { icon: 'location_on', text: liceoInfo.direccion },
+        { icon: 'call',        text: liceoInfo.telefono },
+        { icon: 'mail',        text: liceoInfo.email },
+        { icon: 'schedule',    text: `Lun–Vie ${liceoInfo.horarios.entrada} – ${liceoInfo.horarios.salida}` },
+    ];
 
     return (
         <footer className="bg-surface-container-low border-t border-outline-variant/20 w-full">
@@ -37,13 +39,13 @@ export default function Footer() {
                     <div className="lg:col-span-1">
                         <div className="flex items-center gap-3 mb-4">
                             <img
-                                alt="UEN Logo"
+                                alt={`Logo ${liceoInfo.nombre}`}
                                 className="h-10 w-10 object-contain"
                                 src="/assets/images/logo.png"
                                 onError={e => { e.currentTarget.style.display = 'none'; }}
                             />
                             <span className="font-headline font-bold text-on-surface uppercase tracking-widest text-sm">
-                                UEN Pedro<br />Emilio Coll
+                                {liceoInfo.nombreCorto || liceoInfo.nombre}
                             </span>
                         </div>
                         <p className="text-on-surface-variant text-sm leading-relaxed">
@@ -74,7 +76,7 @@ export default function Footer() {
                     <div>
                         <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-4">Contacto</h4>
                         <ul className="space-y-3">
-                            {CONTACT_INFO.map(item => (
+                            {contactInfo.map(item => (
                                 <li key={item.icon} className="flex items-start gap-2 text-on-surface-variant text-sm">
                                     <span className="material-symbols-outlined text-primary text-base mt-0.5 flex-shrink-0" aria-hidden="true">{item.icon}</span>
                                     {item.text}
@@ -87,7 +89,7 @@ export default function Footer() {
                 {/* Bottom bar */}
                 <div className="border-t border-outline-variant/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-on-surface-variant text-xs">
-                        © {year} UEN Pedro Emilio Coll. Todos los derechos reservados.
+                        © {year} {liceoInfo.nombre}. Todos los derechos reservados.
                     </p>
                     <div className="flex gap-6">
                         <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Política de Privacidad</a>
