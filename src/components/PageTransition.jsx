@@ -24,6 +24,7 @@ const pageComponents = {
     NotFoundPage: lazy(() => import('../pages/NotFoundPage')),
     PasswordRecoveryPage: lazy(() => import('../pages/PasswordRecoveryPage')),
     ResetPasswordPage: lazy(() => import('../pages/ResetPasswordPage')),
+    CreditsPage: lazy(() => import('../pages/CreditsPage')),
 };
 
 function AnimatedRoute({ component: Component, animation }) {
@@ -50,6 +51,7 @@ function PageTransitionRouter() {
         { path: '/eponimo', component: 'EponimoPage', animation: 'slide-up' },
         { path: '/recovery', component: 'PasswordRecoveryPage', animation: 'fade-in' },
         { path: '/reset-password/:token', component: 'ResetPasswordPage', animation: 'fade-in' },
+        { path: '/creditos', component: 'CreditsPage', animation: 'slide-up' },
         { path: '*', component: 'NotFoundPage', animation: 'fade-in' },
     ];
 

@@ -54,31 +54,33 @@ function FeedbackButtons({ onFeedback, disabled }) {
 }
 
 function getPositionClasses(position) {
-    const base = 'z-[100] max-w-sm w-full transition-all duration-300';
+    // On mobile: always stick to bottom with safe side margins.
+    // On sm+: use the configured position.
+    const mobileBase = 'fixed z-[100] transition-all duration-300 bottom-24 left-2 right-2 sm:left-auto sm:right-auto sm:bottom-28 sm:w-[380px]';
     switch (position) {
         case 'bottom-left':
-            return `${base} fixed bottom-28 left-8 origin-bottom-left`;
+            return `${mobileBase} sm:left-6 origin-bottom-left`;
         case 'top-right':
-            return `${base} fixed top-20 right-8 origin-top-right`;
+            return `${mobileBase} sm:right-6 sm:top-20 sm:bottom-auto origin-top-right`;
         case 'top-left':
-            return `${base} fixed top-20 left-8 origin-top-left`;
+            return `${mobileBase} sm:left-6 sm:top-20 sm:bottom-auto origin-top-left`;
         case 'bottom-right':
         default:
-            return `${base} fixed bottom-28 right-8 origin-bottom-right`;
+            return `${mobileBase} sm:right-6 origin-bottom-right`;
     }
 }
 
 function getButtonPosition(position) {
     switch (position) {
         case 'bottom-left':
-            return 'fixed bottom-8 left-8 z-[100]';
+            return 'fixed bottom-4 left-4 z-[100] sm:bottom-6 sm:left-6';
         case 'top-right':
-            return 'fixed top-20 right-8 z-[100]';
+            return 'fixed top-20 right-4 z-[100] sm:right-6';
         case 'top-left':
-            return 'fixed top-20 left-8 z-[100]';
+            return 'fixed top-20 left-4 z-[100] sm:left-6';
         case 'bottom-right':
         default:
-            return 'fixed bottom-8 right-8 z-[100]';
+            return 'fixed bottom-4 right-4 z-[100] sm:bottom-6 sm:right-6';
     }
 }
 
@@ -152,7 +154,7 @@ export default function Chatbot() {
                     </button>
                 </div>
 
-                <div className="p-4 space-y-4 bg-surface-container-low min-h-[350px] max-h-[450px] overflow-y-auto" role="log" aria-live="polite">
+                <div className="p-3 sm:p-4 space-y-4 bg-surface-container-low min-h-[280px] sm:min-h-[350px] max-h-[45vh] sm:max-h-[420px] overflow-y-auto" role="log" aria-live="polite">
                     {messages.map((msg, i) => {
                         const isLastBotMessage = msg.role === 'bot' && i === messages.findIndex((m, idx) => idx > 0 && m.role === 'bot');
                         return (

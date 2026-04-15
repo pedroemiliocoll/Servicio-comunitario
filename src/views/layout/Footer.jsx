@@ -16,6 +16,7 @@ const FOOTER_LINKS = [
         links: [
             { label: 'Nosotros', to: '/#about' },
             { label: 'Misión y Visión', to: '/#academics' },
+            { label: 'Créditos del Sistema', to: '/creditos' },
         ],
     },
 ];
