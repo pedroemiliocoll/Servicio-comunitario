@@ -16,20 +16,21 @@ export default function NewsPage() {
         selectedNews, selectNews, closeModal 
     } = useNewsController();
 
+
     return (
         <div className="bg-surface min-h-screen">
             <Header />
             
-            <main id="main-content" className="pt-20 sm:pt-24 lg:pt-32 pb-16 sm:pb-20 lg:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+            <main id="main-content" className="pt-32 pb-24 max-w-7xl mx-auto px-6 md:px-12">
                 {/* News Hero (Feature the first news item) */}
                 {!loading && news.length > 0 && <NewsHero item={news[0]} onSelect={selectNews} />}
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                     {/* Main Feed */}
                     <div className="lg:col-span-8">
-                        <div className="mb-8 sm:mb-12">
-                            <h2 className="text-2xl sm:text-3xl font-headline font-black text-on-surface mb-2 tracking-tighter">Explorar Noticias</h2>
-                            <p className="text-on-surface-variant text-sm sm:text-base font-medium">Filtrar por categoría para encontrar lo que buscas.</p>
+                        <div className="mb-12">
+                            <h2 className="text-3xl font-headline font-black text-on-surface mb-2 tracking-tighter">Explorar Noticias</h2>
+                            <p className="text-on-surface-variant font-medium">Filtrar por categoría para encontrar lo que buscas.</p>
                         </div>
                         
                         <NewsFilters 

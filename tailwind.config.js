@@ -9,9 +9,6 @@ export default {
   ],
   theme: {
     extend: {
-      screens: {
-        'xs': '480px', // Custom breakpoint for very small mobile devices
-      },
       colors: {
         /* ── Material Design 3 semantic tokens (auto-switch light/dark via CSS vars) ── */
         "surface":                    "var(--md-surface)",
