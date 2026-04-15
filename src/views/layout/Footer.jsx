@@ -32,12 +32,12 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-surface-container-low border-t border-outline-variant/20 w-full">
-            <div className="max-w-7xl mx-auto px-8 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <footer className="bg-surface-container-low border-t border-outline-variant/10 w-full overflow-hidden">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)] py-[var(--section-padding)]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Brand */}
                     <div className="lg:col-span-1">
-                        <div className="flex items-center gap-3 mb-4">
+                        <div className="flex items-center gap-3 mb-6">
                             <img
                                 alt={`Logo ${liceoInfo.nombre}`}
                                 className="h-10 w-10 object-contain"
@@ -48,22 +48,23 @@ export default function Footer() {
                                 {liceoInfo.nombreCorto || liceoInfo.nombre}
                             </span>
                         </div>
-                        <p className="text-on-surface-variant text-sm leading-relaxed">
-                            Institución educativa comprometida con la excelencia académica y el desarrollo integral de nuestra comunidad.
+                        <p className="text-on-surface-variant text-sm leading-relaxed max-w-xs">
+                            Institución educativa comprometida con la excelencia académica y el desarrollo integral de nuestra comunidad, transformando el futuro a través del conocimiento.
                         </p>
                     </div>
 
                     {/* Nav columns */}
                     {FOOTER_LINKS.map(col => (
                         <div key={col.title}>
-                            <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-4">{col.title}</h4>
-                            <ul className="space-y-3">
+                            <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-6 opacity-80">{col.title}</h4>
+                            <ul className="space-y-4">
                                 {col.links.map(link => (
                                     <li key={link.label}>
                                         <Link
                                             to={link.to}
-                                            className="text-on-surface-variant text-sm hover:text-primary transition-colors"
+                                            className="text-on-surface-variant text-sm hover:text-primary transition-colors flex items-center gap-2 group"
                                         >
+                                            <span className="h-px w-0 bg-primary transition-all duration-300 group-hover:w-3"></span>
                                             {link.label}
                                         </Link>
                                     </li>
@@ -74,12 +75,12 @@ export default function Footer() {
 
                     {/* Contact */}
                     <div>
-                        <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-4">Contacto</h4>
-                        <ul className="space-y-3">
+                        <h4 className="font-headline font-black text-on-surface text-sm uppercase tracking-widest mb-6 opacity-80">Contacto</h4>
+                        <ul className="space-y-4">
                             {contactInfo.map(item => (
-                                <li key={item.icon} className="flex items-start gap-2 text-on-surface-variant text-sm">
-                                    <span className="material-symbols-outlined text-primary text-base mt-0.5 flex-shrink-0" aria-hidden="true">{item.icon}</span>
-                                    {item.text}
+                                <li key={item.icon} className="flex items-start gap-3 text-on-surface-variant text-sm">
+                                    <span className="material-symbols-outlined text-primary text-xl flex-shrink-0" aria-hidden="true">{item.icon}</span>
+                                    <span className="leading-snug">{item.text}</span>
                                 </li>
                             ))}
                         </ul>
@@ -87,17 +88,18 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="border-t border-outline-variant/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p className="text-on-surface-variant text-xs">
-                        © {year} {liceoInfo.nombre}. Todos los derechos reservados.
+                <div className="border-t border-outline-variant/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <p className="text-on-surface-variant text-xs text-center md:text-left">
+                        © {year} {liceoInfo.nombre}. <br className="block sm:hidden" /> Todos los derechos reservados.
                     </p>
-                    <div className="flex gap-6">
-                        <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Política de Privacidad</a>
-                        <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Términos de Servicio</a>
-                        <a href="/contacto" className="text-on-surface-variant text-xs hover:text-primary transition-colors">Atención al Estudiante</a>
+                    <div className="flex flex-wrap justify-center gap-6">
+                        <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors underline-offset-4 hover:underline">Privacidad</a>
+                        <a href="#" className="text-on-surface-variant text-xs hover:text-primary transition-colors underline-offset-4 hover:underline">Términos</a>
+                        <a href="/contacto" className="text-on-surface-variant text-xs hover:text-primary transition-colors underline-offset-4 hover:underline">Soporte</a>
                     </div>
                 </div>
             </div>
         </footer>
     );
 }
+

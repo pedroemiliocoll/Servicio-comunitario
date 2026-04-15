@@ -6,17 +6,17 @@ import { useLiceoInfo } from '../../context/LiceoContext';
 
 export function NewsSector({ previewNews = [] }) {
     return (
-        <section className="py-24 bg-surface" id="news">
-            <div className="max-w-7xl mx-auto px-8">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <section className="py-[var(--section-padding)] bg-surface" id="news">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)]">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6">
                     <div className="max-w-2xl">
-                        <span className="text-primary font-black text-[10px] uppercase tracking-[0.2em] mb-4 block">Actualidad &amp; Prensa</span>
-                        <h2 className="text-4xl md:text-5xl font-headline font-black text-on-surface mb-4 tracking-tighter">Novedades Institucionales</h2>
+                        <span className="text-primary font-black text-[10px] uppercase tracking-[0.2em] mb-3 block">Actualidad &amp; Prensa</span>
+                        <h2 className="text-3xl md:text-5xl font-headline font-black text-on-surface mb-4 tracking-tighter">Novedades Institucionales</h2>
                         <p className="text-on-surface-variant font-medium leading-relaxed">
                             Mantente informado sobre los hitos académicos, eventos deportivos y comunicados oficiales de nuestra comunidad educativa.
                         </p>
                     </div>
-                    <Link to="/noticias" className="group flex items-center gap-3 bg-surface-container-high px-6 py-3 rounded-full text-on-surface font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all duration-300">
+                    <Link to="/noticias" className="group flex items-center gap-3 bg-surface-container-high px-6 py-3.5 rounded-full text-on-surface font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all duration-300 shadow-sm">
                         Explorar Hemeroteca
                         <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </Link>
@@ -28,11 +28,11 @@ export function NewsSector({ previewNews = [] }) {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
                     {previewNews.slice(1, 3).map((item, i) => (
                         <article
                             key={i}
-                            className="bg-surface-container-low p-6 rounded-[2rem] flex flex-col md:flex-row gap-8 items-center group cursor-pointer hover:bg-surface-container-high transition-all duration-500"
+                            className="bg-surface-container-low p-5 md:p-6 rounded-[2rem] flex flex-col md:flex-row gap-6 md:gap-8 items-center group cursor-pointer hover:bg-surface-container-high transition-all duration-500"
                             onClick={() => window.location.href = '/noticias'}
                             onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (window.location.href = '/noticias')}
                             tabIndex="0"
@@ -61,10 +61,10 @@ export function NewsSector({ previewNews = [] }) {
 
 export function BiographySector() {
     return (
-        <section className="py-24 bg-surface overflow-hidden" id="about">
-            <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <section className="py-[var(--section-padding)] bg-surface overflow-hidden" id="about">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)] grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <div className="relative">
-                    <div className="relative z-10 rounded-full overflow-hidden border-[12px] border-surface-container-lowest shadow-2xl aspect-square max-w-md mx-auto">
+                    <div className="relative z-10 rounded-3xl lg:rounded-full overflow-hidden border-[8px] md:border-[12px] border-surface-container-lowest shadow-2xl aspect-square max-w-[320px] md:max-w-md mx-auto">
                         <img alt="Pedro Emilio Coll" className="w-full h-full object-cover" src="/assets/images/pedro-emilio-coll.png" loading="lazy" />
                     </div>
                     <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary-fixed/30 rounded-full blur-3xl -z-0"></div>
@@ -93,24 +93,24 @@ export function AssistanceSector() {
     const openChatbot = () => window.dispatchEvent(new CustomEvent('open-chatbot'));
 
     return (
-        <section className="py-24 bg-surface-container-low">
-            <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-sm font-semibold mb-6">
+        <section className="py-[var(--section-padding)] bg-surface-container-low">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)] grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center text-center lg:text-left">
+                <div className="order-2 lg:order-1">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-[10px] md:text-xs font-black tracking-widest mb-6 uppercase">
                         <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span> ASISTENTE VIRTUAL
                     </span>
-                    <h2 className="text-4xl lg:text-5xl font-headline font-extrabold text-on-surface mb-6 leading-tight">
+                    <h2 className="text-3xl md:text-5xl font-headline font-extrabold text-on-surface mb-6 leading-tight tracking-tighter">
                         ¿Dudas sobre el proceso de inscripción?
                     </h2>
-                    <p className="text-on-surface-variant text-lg mb-10 leading-relaxed">
+                    <p className="text-on-surface-variant text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
                         Nuestro asistente inteligente "Coll-Bot" está disponible 24/7 para responder preguntas sobre requisitos, horarios, uniformes y más. Obtén respuestas instantáneas sin esperas.
                     </p>
-                    <button onClick={openChatbot} className="bg-[#005bbf] text-white px-8 py-4 rounded-xl font-headline font-bold flex items-center gap-3 hover:bg-[#004a9e] transition-colors shadow-lg cursor-pointer">
+                    <button onClick={openChatbot} className="bg-primary text-white px-8 py-4 rounded-xl font-headline font-bold flex items-center justify-center lg:justify-start gap-3 hover:bg-primary-container transition-all shadow-lg shadow-primary/20 active:scale-95 mx-auto lg:mx-0">
                         Chatear con Coll-Bot <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
                     </button>
                 </div>
-                <div className="relative">
-                    <div className="bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/30 max-w-md mx-auto">
+                <div className="relative order-1 lg:order-2">
+                    <div className="bg-surface-container-lowest rounded-3xl shadow-2xl overflow-hidden border border-outline-variant/10 max-w-[340px] md:max-w-md mx-auto scale-90 sm:scale-100 mb-8 lg:mb-0">
                         <div className="bg-primary p-4 flex items-center gap-3">
                             <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
                                 <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
@@ -156,9 +156,9 @@ export function AssistanceSector() {
 
 export function MissionVisionSector() {
     return (
-        <section className="py-24 bg-surface-container-low" id="academics">
-            <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-surface-container-lowest p-12 rounded-[2rem] shadow-sm">
+        <section className="py-[var(--section-padding)] bg-surface-container-low" id="academics">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)] grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div className="bg-surface-container-lowest p-8 md:p-12 rounded-[2rem] shadow-sm border border-outline-variant/5">
                     <div className="w-16 h-16 bg-primary-fixed dark:bg-primary flex items-center justify-center rounded-2xl mb-8 shadow-sm">
                         <span className="material-symbols-outlined text-primary dark:text-white text-3xl">flag</span>
                     </div>
@@ -167,8 +167,8 @@ export function MissionVisionSector() {
                         Garantizar una educación de calidad que promueva el desarrollo de competencias cognitivas, sociales y éticas en los estudiantes, fomentando el pensamiento crítico y la responsabilidad ciudadana bajo los estándares pedagógicos más elevados.
                     </p>
                 </div>
-                <div className="bg-surface-container-lowest p-12 rounded-[2rem] shadow-sm">
-                    <div className="w-16 h-16 bg-primary-fixed dark:bg-primary flex items-center justify-center rounded-2xl mb-8 shadow-s">
+                <div className="bg-surface-container-lowest p-8 md:p-12 rounded-[2rem] shadow-sm border border-outline-variant/5">
+                    <div className="w-16 h-16 bg-primary-fixed dark:bg-primary flex items-center justify-center rounded-2xl mb-8 shadow-sm">
                         <span className="material-symbols-outlined text-primary dark:text-white text-3xl">visibility</span>
                     </div>
                     <h3 className="text-3xl font-headline font-bold mb-6 text-on-surface">Nuestra Visión</h3>
@@ -222,10 +222,10 @@ export function ContactSector() {
     };
 
     return (
-        <section className="py-24 bg-surface" id="contact">
-            <div className="max-w-7xl mx-auto px-8">
-                <div className="bg-[#005bbf] text-white rounded-[3rem] p-12 lg:p-20 relative overflow-hidden">
-                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <section className="py-[var(--section-padding)] bg-surface" id="contact">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)]">
+                <div className="bg-primary text-on-primary rounded-[2.5rem] p-8 md:p-12 lg:p-20 relative overflow-hidden shadow-2xl shadow-primary/20">
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                         <div>
                             <h2 className="text-4xl font-headline font-bold mb-6 text-on-primary">¿Necesitas información?</h2>
                             <p className="text-on-primary/80 text-lg mb-10">Estamos aquí para ayudarte. Contáctanos por cualquiera de nuestros canales oficiales.</p>
@@ -349,11 +349,11 @@ export function ContactSector() {
 export function MapSector() {
     const { liceoInfo } = useLiceoInfo();
     return (
-        <section className="py-24 bg-surface-container-low" id="location">
-            <div className="max-w-7xl mx-auto px-8">
-                <div className="text-center mb-16">
+        <section className="py-[var(--section-padding)] bg-surface-container-low" id="location">
+            <div className="max-w-7xl mx-auto px-[var(--container-padding)]">
+                <div className="text-center mb-12 md:mb-16">
                     <span className="text-primary font-black text-[10px] uppercase tracking-[0.2em] mb-4 block">Ubicación</span>
-                    <h2 className="text-4xl md:text-5xl font-headline font-black text-on-surface mb-4 tracking-tighter">Encuéntranos</h2>
+                    <h2 className="text-3xl md:text-5xl font-headline font-black text-on-surface mb-4 tracking-tighter">Encuéntranos</h2>
                     <p className="text-on-surface-variant font-medium leading-relaxed max-w-2xl mx-auto">
                         Estamos ubicados en {liceoInfo.direccion}.
                     </p>

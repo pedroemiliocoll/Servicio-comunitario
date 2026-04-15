@@ -128,30 +128,81 @@ export default function Header() {
                 </div>
             </div>
 
-            {/* Mobile drawer */}
+            {/* Mobile drawer (Full-screen Overlay) */}
             <div
                 id="mobile-menu"
-                className={`md:hidden transition-all duration-300 overflow-hidden border-t border-outline-variant/20 ${menuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
-                style={{ background: 'color-mix(in srgb, var(--md-surface) 95%, transparent)', backdropFilter: 'blur(16px)' }}
+                className={`fixed inset-0 z-[60] md:hidden transition-all duration-500 ease-in-out ${
+                    menuOpen ? 'translate-x-0 opacity-100 visible' : 'translate-x-full opacity-0 invisible'
+                }`}
+                style={{ 
+                    background: 'color-mix(in srgb, var(--md-surface) 90%, transparent)', 
+                    backdropFilter: 'blur(24px)',
+                    WebkitBackdropFilter: 'blur(24px)'
+                }}
                 aria-hidden={!menuOpen}
             >
-                <ul className="flex flex-col px-8 py-4 gap-2" role="menu">
-                    {NAV_LINKS.map(link => (
-                        <li key={link.to} role="none">
-                            <PrefetchLink
-                                role="menuitem"
-                                aria-label={link.ariaLabel}
-                                aria-current={isActive(link) ? 'page' : undefined}
-                                to={link.to}
-                                onClick={() => setMenuOpen(false)}
-                                className={`py-3 font-headline font-semibold transition-colors border-b border-outline-variant/10 block ${isActive(link) ? 'text-primary' : 'text-on-surface-variant hover:text-primary'}`}
-                            >
-                                {link.label}
-                            </PrefetchLink>
-                        </li>
-                    ))}
-                </ul>
+                <div className="flex flex-col h-full bg-surface/40">
+                    <div className="flex justify-between items-center px-8 h-16 border-b border-outline-variant/10">
+                        <div className="flex items-center gap-3">
+                            <img alt="Logo" className="h-8 w-8 object-contain" src="/assets/images/logo.png" />
+                            <span className="font-headline font-bold text-on-surface text-sm uppercase tracking-widest">Menú</span>
+                        </div>
+                        <button
+                            onClick={() => setMenuOpen(false)}
+                            className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface"
+                            aria-label="Cerrar menú"
+                        >
+                            <span className="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto py-12 px-8">
+                        <nav className="flex flex-col gap-8">
+                            {NAV_LINKS.map((link, i) => (
+                                <PrefetchLink
+                                    key={link.to}
+                                    to={link.to}
+                                    onClick={() => setMenuOpen(false)}
+                                    className={`group flex items-center justify-between transition-all duration-300 ${
+                                        isActive(link) ? 'text-primary' : 'text-on-surface hover:text-primary'
+                                    }`}
+                                    style={{ transitionDelay: `${i * 50}ms` }}
+                                >
+                                    <span className="text-4xl font-headline font-extrabold tracking-tight">
+                                        {link.label}
+                                    </span>
+                                    <span className={`material-symbols-outlined transition-transform duration-300 group-hover:translate-x-2 ${
+                                        isActive(link) ? 'opacity-100' : 'opacity-0'
+                                    }`}>
+                                        arrow_forward_ios
+                                    </span>
+                                </PrefetchLink>
+                            ))}
+                        </nav>
+                        
+                        <div className="mt-16 pt-8 border-t border-outline-variant/10 flex flex-col gap-6">
+                            <div className="flex items-center justify-between">
+                                <span className="text-on-surface-variant font-medium">Apariencia</span>
+                                <button
+                                    onClick={toggleTheme}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-high transition-colors"
+                                >
+                                    <span className="material-symbols-outlined text-sm">
+                                        {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                                    </span>
+                                    <span className="text-sm font-semibold">{theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}</span>
+                                </button>
+                            </div>
+                            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10">
+                                <p className="text-sm text-on-surface-variant mb-0 italic">
+                                    "La educación es el arma más poderosa que puedes usar para cambiar el mundo."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             {/* Search Modal */}
             <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
